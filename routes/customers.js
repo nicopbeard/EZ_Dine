@@ -1,5 +1,5 @@
 const express = require('express');
-
+const Customer = require('../models/Customer.js');
 const router = express.Router();
 
 router.get('/', (req, res) => {
