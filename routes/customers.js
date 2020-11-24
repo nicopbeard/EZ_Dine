@@ -38,10 +38,10 @@ router.post('/', (req, res) => {
 router.get('/:user_id', (req, res) => {
 	const query = {'_id': req.params.user_id};
 	Customer.find(query, (err, customer) => {
-		if(err) return res.status(404).send();
-		else {
+		if(err)
+			return res.status(404).send();
+		else
 			res.status(200).json(customer[0]);
-		}
 	})
 })
 
@@ -49,9 +49,12 @@ router.get('/:user_id', (req, res) => {
 router.put('/:user_id', (req, res) => {
 	const query = {'_id': req.params.user_id};
 	Customer.find(query, (err, result) => {
-		if(err) return res.status(500).send();
-		else {
-			if(result.length == 0){
+		if(err)
+			return res.status(500).send();
+		else
+		{
+			if(result.length == 0)
+			{
 				const newCustomer = {
 					username: req.body.username,
 					password: req.body.password,
@@ -62,7 +65,9 @@ router.put('/:user_id', (req, res) => {
 					if(err1) return res.status(500).send(err1);
 					else res.status(200).send();
 				})
-			} else {
+			}
+			else
+			{
 				const newVals = {$set:{username: req.body.username, password: req.body.password, date: Date.now()}};
 				Customer.updateOne(query, newVals, (err2) => {
 					if(err2) return res.status(500).send(err2);
@@ -78,13 +83,18 @@ router.delete('/:user_id', (req, res) => {
 	const query = {'_id': req.params.user_id};
 	Customer.find(query,(err,results) => {
 		console.log(err);
-		if (err) return res.status(500).send();
-		else if (results.length == 0) return res.status(404).send();
-		else {
+		if (err)
+			return res.status(500).send();
+		else if(results.length == 0)
+			return res.status(404).send();
+		else
+		{
 			Customer.remove(query,(err2) => {
 				console.log(err2);
-				if(err2) return res.status(500).send();
-				else res.status(200).send();
+				if(err2)
+					return res.status(500).send();
+				else
+					res.status(200).send();
 			})
 		}
 	})
