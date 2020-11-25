@@ -6,11 +6,11 @@ const customerSchema = new mongoose.Schema({
     username : {type : String},
     password : {type : String, required : true},
     date : Date,
-    Orders : [{
+    orders : [new Schema({
         order_id : Number,
         menu_item : String,
         date : Date
-    }]
+    })]
  });
 
 
