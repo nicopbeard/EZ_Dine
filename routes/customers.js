@@ -73,35 +73,22 @@ router.post('/', (req, res) => {
 
 // POST new order for a given user
 router.post('/:user_id/orders', (req, res) => {
-	//validate schema
-	// if(!req.body.menu_item)
-	// 	res.status(400).send();
-	// else
-	// {
-	// 	//find the specified customer
-	// 	Customer.findOne({_id: req.params.user_id}, function(err, customer) {
-	// 		//if the customer doesn't exist, send a 400 response
-	// 		if(!customer)
-	// 		  res.status(400).send();
-	// 		else//otherwise, update the review for the corresponding customer
-	// 		{
-	// 		  //create an order id
-	// 		  var orderId = Math.floor(
-	// 			Math.random() * (999999 - 100000) + 100000
-	// 		  );
-	// 		  //create the order
-	// 		  const order = {
-	// 			order_id : orderId,
-	// 			menu_item : req.body.menu_item,
-	// 			date : Date.now()
-	// 		  };
-	// 		  //post the order to the corresponding customer
-	// 		  Customer.findOneAndUpdate({_id: req.params.user_id}, {$push: {Orders: order}}, {safe: true, upsert: true}, function(err, orders) {
-	// 			res.status(201).send();
-	// 		  });
-	// 		}
-	// 	});
-	// }
+	if(!req.body.menu_item)
+		res.status(400).send();
+	else {
+		const query = {_id: req.params.user_id};
+		const newOrder = {
+			menu_item: req.body.menu_item,
+			date: Date.now()
+		}
+		const newVals = {$push: {orders: newOrder} };
+		Customer.findOneAndUpdate(query, newVals, (error) => {
+			if(error) 
+				res.status(500).send();
+			else
+			 	res.status(200).send();
+		})
+	}
 })
 
 // GET user by _id

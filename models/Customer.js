@@ -7,7 +7,6 @@ const customerSchema = new mongoose.Schema({
     password : {type : String, required : true},
     date : Date,
     orders : [new Schema({
-        order_id : Number,
         menu_item : String,
         date : Date
     })]
