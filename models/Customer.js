@@ -1,11 +1,12 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+mongoose.set('useFindAndModify', false);
 
 const customerSchema = new mongoose.Schema({
     username : {type : String},
     password : {type : String, required : true},
     date : Date,
-    Order : [{
+    Orders : [{
         order_id : Number,
         menu_item : String,
         date : Date
