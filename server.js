@@ -7,6 +7,7 @@ const createError = require('http-errors');
 
 
 const customerRouter = require('./routes/customers');
+const employeeRouter = require('./routes/employees');
 
 // NOTE: you must copy .env.example and name it .env before adding database credentials
 dotenv.config({ path: '.env' });
@@ -31,6 +32,7 @@ app.use(express.urlencoded({ extended: false }));
 
 // Set up routers:
 app.use('/api/customers', customerRouter);
+app.use('/api/employees', employeeRouter);
 
 // TODO: there is probably a better way to handle errors
 app.use((req, res, next) => {

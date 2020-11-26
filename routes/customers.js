@@ -100,8 +100,13 @@ router.post('/:user_id/orders', (req, res) => {
 		res.status(400).send();
 	else {
 		const query = {_id: req.params.user_id};
+		let specReq;
+		if(!req.body.special_requests) specReq = "none";
+		else specReq = req.body.special_requests;
 		const newOrder = {
 			menu_item: req.body.menu_item,
+			special_requests : specReq,
+			status: "ordered",
 			date: Date.now()
 		}
 		const newVals = {$push: {orders: newOrder} };
