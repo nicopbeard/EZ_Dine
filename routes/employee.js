@@ -2,7 +2,7 @@ const express = require('express');
 const Employee = require('../models/Employee.js');
 const router = express.Router();
 
-//API url: http://localhost:5000/api/employees
+//API url: http://localhost:5000/employees
 
 // GET all employees in database
 router.get('/', (req, res) => {

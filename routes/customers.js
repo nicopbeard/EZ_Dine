@@ -2,7 +2,7 @@ const express = require('express');
 const Customer = require('../models/Customer.js');
 const router = express.Router();
 
-//API url: http://localhost:5000/api/customers
+//API url: http://localhost:5000/customers
 
 // GET all customers in database
 router.get('/', (req, res) => {
