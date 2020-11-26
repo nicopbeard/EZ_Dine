@@ -7,7 +7,7 @@ const createError = require('http-errors');
 
 
 const customerRouter = require('./routes/customers');
-const employeeRouter = require('./routes/employee');
+const employeeRouter = require('./routes/employees');
 const menuRouter = require('./routes/menu');
 
 // NOTE: you must copy .env.example and name it .env before adding database credentials

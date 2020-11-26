@@ -23,9 +23,9 @@ router.get('/', (req, res) => {
 				res.status(404).send();
 			else {
 				let foundEmployees = [];
-				employee.forEach((employee) => {
-					if (employee._id.toString().includes(req.query.search) || employee.username.toString().includes(req.query.search))
-						foundEmployees.push(employee);
+				employee.forEach((emp) => {
+					if (emp._id.toString().includes(req.query.search) || emp.username.toString().includes(req.query.search))
+						foundEmployees.push(emp);
 				})
 				if(foundEmployees.length == 0)
 					res.status(404).send();

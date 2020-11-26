@@ -100,8 +100,13 @@ router.post('/:user_id/orders', (req, res) => {
 		res.status(400).send();
 	else {
 		const query = {_id: req.params.user_id};
+		let specReq;
+		if(!req.body.special_requests) specReq = "none";
+		else specReq = req.body.special_requests;
 		const newOrder = {
 			menu_item: req.body.menu_item,
+			special_requests : specReq,
+			status: "ordered",
 			date: Date.now()
 		}
 		const newVals = {$push: {orders: newOrder} };
@@ -216,9 +221,11 @@ router.put('/:user_id/orders/:order_id', (req, res) => {
 				//if the specified order_id didn't match any results
 				if(counter === 0)
 				{
-					const query = {_id: req.params.user_id};
+					// const query2 = {_id: req.params.user_id};
 					const newOrder = {
 						menu_item: req.body.menu_item,
+						special_requests : specReq,
+						status: "ordered",
 						date: Date.now()
 					}
 					const newVals = {$push: {orders: newOrder} };
