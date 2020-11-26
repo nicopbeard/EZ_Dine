@@ -221,7 +221,7 @@ router.put('/:user_id/orders/:order_id', (req, res) => {
 				//if the specified order_id didn't match any results
 				if(counter === 0)
 				{
-					const query2 = {_id: req.params.user_id};
+					// const query2 = {_id: req.params.user_id};
 					const newOrder = {
 						menu_item: req.body.menu_item,
 						special_requests : specReq,
@@ -229,7 +229,7 @@ router.put('/:user_id/orders/:order_id', (req, res) => {
 						date: Date.now()
 					}
 					const newVals = {$push: {orders: newOrder} };
-					Customer.findOneAndUpdate(query2, newVals, (error) => {
+					Customer.findOneAndUpdate(query, newVals, (error) => {
 						if(error) 
 							res.status(500).send();
 						else
