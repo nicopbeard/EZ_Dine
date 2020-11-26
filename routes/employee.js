@@ -47,18 +47,78 @@ router.get('/:user_id', (req, res) => {
 	})
 })
 
+// POST new user
 router.post('/', (req, res) => {
-	// TODO: checkSchema function
-	const newEmployee = {
-		username: req.body.username,
-		password: req.body.password,
-		date: Date.now()
+	//validate schema
+	if(!req.body.username || !req.body.password)
+		res.status(400).send();
+	else
+	{
+		const newEmployee = {
+			username: req.body.username,
+			password: req.body.password,
+			date: Date.now()
+		}
+		Employee.create(newEmployee, (err) => {
+			if(err)
+				return res.status(500).send(err);
+			else
+				res.status(200).send();
+		})
 	}
-	Employee.create(newEmployee, (err, result) => {
+})
+
+// PUT user by _id
+router.put('/:user_id', (req, res) => {
+	const query = {'_id': req.params.user_id};
+	Employee.find(query, (err, result) => {
 		if(err)
-			return res.status(500).send(err);
+			return res.status(500).send();
 		else
-			res.status(200).send();
+		{
+			if(result.length == 0)
+			{
+				const newEmployee = {
+					username: req.body.username,
+					password: req.body.password,
+					date: Date.now(),
+					Order: []
+				}
+				Employee.create(newEmployee, (err1) => {
+					if(err1) return res.status(500).send(err1);
+					else res.status(200).send();
+				})
+			}
+			else
+			{
+				const newVals = {$set:{username: req.body.username, password: req.body.password, date: Date.now()}};
+				Employee.updateOne(query, newVals, (err2) => {
+					if(err2) return res.status(500).send(err2);
+					else res.status(200).send();
+				})
+			}
+		}
+	})
+})
+
+// DELETE user by _id
+router.delete('/:user_id', (req, res) => {
+	const query = {'_id': req.params.user_id};
+	Employee.find(query,(err,results) => {
+		if (err)
+			return res.status(500).send();
+		else if(results.length == 0)
+			return res.status(404).send();
+		else
+		{
+			Employee.remove(query,(err2) => {
+				console.log(err2);
+				if(err2)
+					return res.status(500).send();
+				else
+					res.status(200).send();
+			})
+		}
 	})
 })
 
