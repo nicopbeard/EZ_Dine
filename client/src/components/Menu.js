@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './customers.css';
-import {Button, Card, Divider, Grid, Header, Icon, Image, Label, List} from "semantic-ui-react";
+import {Button, Divider, Grid, Header, Icon, Label, List} from "semantic-ui-react";
 
 class Menu extends Component {
   constructor(props) {
