@@ -24,7 +24,7 @@ router.get('/', (req, res) => {
 			else {
 				let foundMenus = [];
 				menus.forEach((menu) => {
-					if (menu._id.toString().includes(req.query.search) || menu.price.toString().includes(req.query.search) || menu.description.toString().includes(req.query.search) || menu.classification.toString().includes(req.query.search))
+					if (menu._id.toString().includes(req.query.search) || menu.price.toString().includes(req.query.search) || menu.description.toString().includes(req.query.search) || menu.class.toString().includes(req.query.search))
 						foundMenus.push(menu);
 				})
 				if(foundMenus.length == 0)
@@ -48,7 +48,7 @@ router.get('/appetizers', (req, res) => {
             {
                 let appetizers = [];
                 menuItems.forEach((item) => {
-                    if(item.classification === "appetizer")
+                    if(item.class === "appetizer")
                         appetizers.push(item);
                 })
                 if(appetizers.length == 0)
@@ -67,7 +67,7 @@ router.get('/appetizers', (req, res) => {
             {
                 let appetizers = [];
                 menuItems.forEach((item) => {
-                    if(item.classification === "appetizer" && (item.description.includes(req.query.search) || item.item.includes(req.query.search)))
+                    if(item.class === "appetizer" && (item.description.includes(req.query.search) || item.item.includes(req.query.search)))
                         appetizers.push(item);
                 })
                 if(appetizers.length == 0)
@@ -91,7 +91,7 @@ router.get('/entrees', (req, res) => {
             {
                 let entrees = [];
                 menuItems.forEach((item) => {
-                    if(item.classification === "entree")
+                    if(item.class === "entree")
                         entrees.push(item);
                 })
                 if(entrees.length == 0)
@@ -110,7 +110,7 @@ router.get('/entrees', (req, res) => {
             {
                 let entrees = [];
                 menuItems.forEach((item) => {
-                    if(item.classification === "entree" && (item.description.includes(req.query.search) || item.item.includes(req.query.search)))
+                    if(item.class === "entree" && (item.description.includes(req.query.search) || item.item.includes(req.query.search)))
                         entrees.push(item);
                 })
                 if(entrees.length == 0)
@@ -134,7 +134,7 @@ router.get('/beverages', (req, res) => {
             {
                 let beverages = [];
                 menuItems.forEach((item) => {
-                    if(item.classification === "beverage")
+                    if(item.class === "beverage")
                         beverages.push(item);
                 })
                 if(beverages.length == 0)
@@ -153,7 +153,7 @@ router.get('/beverages', (req, res) => {
             {
                 let beverages = [];
                 menuItems.forEach((item) => {
-                    if(item.classification === "beverage" && (item.description.includes(req.query.search) || item.item.includes(req.query.search)))
+                    if(item.class === "beverage" && (item.description.includes(req.query.search) || item.item.includes(req.query.search)))
                         beverages.push(item);
                 })
                 if(beverages.length == 0)
@@ -177,7 +177,7 @@ router.get('/dessert', (req, res) => {
             {
                 let desserts = [];
                 menuItems.forEach((item) => {
-                    if(item.classification === "dessert")
+                    if(item.class === "dessert")
                         desserts.push(item);
                 })
                 if(desserts.length == 0)
@@ -196,7 +196,7 @@ router.get('/dessert', (req, res) => {
             {
                 let desserts = [];
                 menuItems.forEach((item) => {
-                    if(item.classification === "dessert" && (item.description.includes(req.query.search) || item.item.includes(req.query.search)))
+                    if(item.class === "dessert" && (item.description.includes(req.query.search) || item.item.includes(req.query.search)))
                         desserts.push(item);
                 })
                 if(desserts.length == 0)
@@ -210,7 +210,7 @@ router.get('/dessert', (req, res) => {
 
 //create new menu item
 router.post('/', (req, res) => {
-    if(!req.body.item || !req.body.price || !req.body.description || !req.body.classification)
+    if(!req.body.item || !req.body.price || !req.body.description || !req.body.class)
         res.status(400).send();
     else
     {
@@ -218,7 +218,7 @@ router.post('/', (req, res) => {
             item: req.body.item,
             price: req.body.price,
             description: req.body.description,
-            classification: req.body.classification
+            class: req.body.class
         }
         Menu.create(newItem, (err, result) => {
             if(err)
@@ -243,7 +243,7 @@ router.put('/:_id', (req, res) => {
 					item: req.body.item,
 					price: req.body.price,
 					description: req.body.description,
-					classification: req.body.classification
+					class: req.body.class
 				}
 				Menu.create(newMenu, (err1) => {
 					if(err1) return res.status(500).send(err1);
@@ -252,7 +252,7 @@ router.put('/:_id', (req, res) => {
 			}
 			else
 			{
-				const newVals = {$set:{item: req.body.item, price: req.body.price, description: req.body.description, classification: req.body.classification}};
+				const newVals = {$set:{item: req.body.item, price: req.body.price, description: req.body.description, class: req.body.class}};
 				Menu.updateOne(query, newVals, (err2) => {
 					if(err2) return res.status(500).send(err2);
 					else res.status(200).send();
