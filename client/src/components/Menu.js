@@ -79,7 +79,7 @@ class Menu extends Component {
               </Grid.Column>
               <Grid.Column>
                 <Header as='h3' textAlign='center'>
-                  Main Course
+                  Main Courses
                 </Header>
                 <Divider style={{width: 60, margin: 'auto'}}/>
                 <List divided relaxed='very'>
@@ -88,7 +88,7 @@ class Menu extends Component {
               </Grid.Column>
               <Grid.Column>
                 <Header as='h3' textAlign='center'>
-                  Dessert
+                  Desserts
                 </Header>
                 <Divider style={{width: 60, margin: 'auto'}}/>
                 <List divided relaxed='very'>
@@ -97,7 +97,7 @@ class Menu extends Component {
               </Grid.Column>
               <Grid.Column>
                 <Header as='h3' textAlign='center'>
-                  Beverage
+                  Beverages
                 </Header>
                 <Divider style={{width: 60, margin: 'auto'}}/>
                 <List divided relaxed='very'>
