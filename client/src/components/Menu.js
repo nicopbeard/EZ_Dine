@@ -16,7 +16,7 @@ class Menu extends Component {
       .then(res => res.json())
       .then(menu => this.setState({menu}, () => console.log("Menu fetched...", menu)))
   }
-  
+
   renderMenuItems = function(menuItems) { // called for each menu category and passed that categories items
     return [
         menuItems.map((item) => (
@@ -53,16 +53,19 @@ class Menu extends Component {
     const appetizers = this.state.menu.filter((item) => {
       return item.class === 'appetizer';
     });
-    const mains = this.state.menu.filter((item) => {
+    const entrees = this.state.menu.filter((item) => {
       return item.class === 'entree';
     });
     const desserts = this.state.menu.filter((item) => {
       return item.class === 'dessert';
     });
+    const beverages = this.state.menu.filter((item) => {
+      return item.class === 'beverage';
+    });
     return (
         <div>
           <h2>Todays Menu</h2>
-          <Grid columns={3} divided>
+          <Grid columns={4} divided>
             <Grid.Row>
               {/*TODO: look into three column fluid that stacks them as needed*/}
               <Grid.Column>
@@ -80,7 +83,7 @@ class Menu extends Component {
                 </Header>
                 <Divider style={{width: 60, margin: 'auto'}}/>
                 <List divided relaxed='very'>
-                  {this.renderMenuItems(mains)}
+                  {this.renderMenuItems(entrees)}
                 </List>
               </Grid.Column>
               <Grid.Column>
@@ -90,6 +93,15 @@ class Menu extends Component {
                 <Divider style={{width: 60, margin: 'auto'}}/>
                 <List divided relaxed='very'>
                   {this.renderMenuItems(desserts)}
+                </List>
+              </Grid.Column>
+              <Grid.Column>
+                <Header as='h3' textAlign='center'>
+                  Beverage
+                </Header>
+                <Divider style={{width: 60, margin: 'auto'}}/>
+                <List divided relaxed='very'>
+                  {this.renderMenuItems(beverages)}
                 </List>
               </Grid.Column>
             </Grid.Row>
