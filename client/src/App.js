@@ -17,16 +17,16 @@ import {
 
 class App extends Component {
 
-	
-
 	render() {
 		return (
 			<ProvideAuth>
 				<Router>
 					<div className="App">
-						<Header inverted className="App-header">
-							<img src={logo} className="App-logo" alt="logo" />
-							<h1 className="App-title">EZ Dine</h1>
+						<Header inverted className="App-header" textAlign="center">
+							<Container>
+								<img src={logo} className="App-logo" alt="logo" />
+								<h1 className="App-title" >EZ Dine</h1>
+							</Container>
 						</Header>
 						<AuthButton />
 						<nav>
