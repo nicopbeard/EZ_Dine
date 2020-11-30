@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { withAuth } from '@okta/okta-react';
+import {Menu, Segment} from "semantic-ui-react";
 
 export default withAuth(
     class Navigation extends React.Component {
@@ -25,46 +26,27 @@ export default withAuth(
       render() {
         if (this.state.authenticated === null) return null;
         const authNav = this.state.authenticated ? (
-            <ul className="auth-nav">
-              <li>
-                <a
-                    href="javascript:void(0)"
-                    onClick={() => this.props.auth.logout()}
-                >
-                  Logout
-                </a>
-              </li>
-              <li>
-                <Link to="/profile">Profile</Link>
-              </li>
-              <li>
-                <Link to="/menu">Menu</Link>
-              </li>
-            </ul>
+                <React.Fragment>
+                  <Menu.Item as={Link} to='/profile' name='profile'/>
+                  <Menu.Item as={Link} to='/menu' name='menu'/>
+                  <Menu.Item onClick={() => this.props.auth.logout()} name='Sign out'/>
+                </React.Fragment>
         ) : (
-            <ul className="auth-nav">
-              <li>
-                <a
-                    href="javascript:void(0)"
-                    onClick={() => this.props.auth.login()}
-                >
-                  Login
-                </a>
-              </li>
-              <li>
-                <Link to="/register">Register</Link>
-              </li>
-            </ul>
+            <React.Fragment>
+              <Menu.Item as={Link} to='/register' name='Register'/>
+              <Menu.Item onClick={() => this.props.auth.login()} name='Sign in'/>
+            </React.Fragment>
         );
         return (
-            <nav>
-              <ul>
-                <li>
-                  <Link to="/">Home</Link>
-                </li>
+            <Segment inverted color='blue'>
+              <Menu pointing secondary inverted>
+                <Menu.Item
+                    as={Link} to='/'
+                    name='home'
+                />
                 {authNav}
-              </ul>
-            </nav>
+              </Menu>
+            </Segment>
         );
       }
     }

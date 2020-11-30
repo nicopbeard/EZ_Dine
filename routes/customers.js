@@ -80,45 +80,50 @@ router.post('/', (req, res) => {
 		res.status(400).send();
 	else
 	{
-		const newCustomer = {
-			username: req.body.email,
-			password: req.body.password,
-			date: Date.now(),
-			orders: []
-		};
-		const newAuthUser = {
-			profile: {
-				// username: req.body.username,
-				firstName: 'Test',
-				lastName: 'Name',
-				email: req.body.email,
-				login: req.body.email,
-				// date: Date.now(),
-				// orders: []
-			},
-			credentials: {
-				password: {
-					value: req.body.password,
-				}
+		// NB: the password is now handled by Okta
+		const newCustomer = new Customer({
+				username: req.body.email,
+				date: Date.now(),
+				orders: []
+		});
+		// TODO: lets make this not fail on duplicate key
+		newCustomer.save((err, item) => {
+			if(err) {
+				console.log(err);
+				return res.status(500).send(err);
+			} else {
+				const newAuthUser = {
+					profile: {
+						// username: req.body.username,
+						firstName: req.body.firstName,
+						lastName: req.body.lastName,
+						email: req.body.email,
+						login: req.body.email,
+						userType: 'Customer',
+						userId: item._id
+						// date: Date.now(),
+						// orders: []
+					},
+					credentials: {
+						password: {
+							value: req.body.password,
+						}
+					}
+				};
+				oktaClient
+						.createUser(newAuthUser)
+						.then((user) => {
+							user.addToGroup('Customer');
+							res.status(200).send();
+						})
+						.catch((err) => {
+							console.log(err);
+							res.status(400).send(err);
+						});
 			}
-		};
-		oktaClient
-				.createUser(newAuthUser)
-				.then((user) => {
-					res.status(201).send(user);
-				})
-				.catch((err) => {
-					console.log(err);
-					res.status(400).send(err);
-				});
-		// Customer.create(newCustomer, (err) => {
-		// 	if(err)
-		// 		return res.status(500).send(err);
-		// 	else
-		// 		res.status(200).send();
-		// })
+		})
 	}
-})
+});
 
 // POST new order for a given user
 router.post('/:user_id/orders', (req, res) => {

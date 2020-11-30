@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
-import Customers from './components/Customers';
 import Menu from './components/Menu';
-import {Container, Header} from "semantic-ui-react";
+import {Container} from "semantic-ui-react";
 import Navigation from "./components/shared/Navigation";
 import {Route} from "react-router-dom";
 import HomePage from "./components/HomePage";
@@ -19,15 +17,21 @@ class App extends Component {
 			<div className="App">
 				<Navigation />
 				<main>
-					<Route path='/' exact component={HomePage} />
-					<Route
-							path='/login'
-							render={() => <LoginPage baseUrl={config.url}/>}
-					/>
-					<Route path='/implicit/callback' component={ImplicitCallback} />
-					<Route path='/register' component={RegistrationForm}/>
-					<SecureRoute path='/profile' component={ProfilePage}/>
-					<SecureRoute path='/menu' component={Menu}/>
+					<Container>
+						<Route path='/' exact component={HomePage} />
+						<Route
+								path='/login'
+								render={() => <LoginPage baseUrl={config.url}/>}
+						/>
+						<Route path='/implicit/callback' component={ImplicitCallback} />
+						<Route path='/register' component={RegistrationForm}/>
+						{/*@TODO: add conditional here based on what user is logged into*/}
+						<SecureRoute path='/profile' component={ProfilePage}/>
+						<SecureRoute
+								path='/menu'
+								component={Menu}
+						/>
+					</Container>
 				</main>
 				{/*<Header inverted className="App-header">*/}
 					{/*<img src={logo} className="App-logo" alt="logo" />*/}
