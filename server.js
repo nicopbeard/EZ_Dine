@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 const chalk = require('chalk');
 const mongoose = require('mongoose');
 const createError = require('http-errors');
+var path = require('path');
 
 
 const customerRouter = require('./routes/customers');
@@ -26,6 +27,7 @@ mongoose.connection.on('error', (err) => {
 	console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('✗'));
 	process.exit();
 });
+
 
 app.use(logger('dev'));
 app.use(express.json());
