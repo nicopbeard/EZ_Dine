@@ -4,9 +4,12 @@ const dotenv = require('dotenv');
 const chalk = require('chalk');
 const mongoose = require('mongoose');
 const createError = require('http-errors');
+var path = require('path');
 
 
 const customerRouter = require('./routes/customers');
+const employeeRouter = require('./routes/employees');
+const menuRouter = require('./routes/menu');
 
 // NOTE: you must copy .env.example and name it .env before adding database credentials
 dotenv.config({ path: '.env' });
@@ -25,12 +28,15 @@ mongoose.connection.on('error', (err) => {
 	process.exit();
 });
 
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Set up routers:
-app.use('/api/customers', customerRouter);
+app.use('/customers', customerRouter);
+app.use('/employees', employeeRouter);
+app.use('/menu', menuRouter);
 
 // TODO: there is probably a better way to handle errors
 app.use((req, res, next) => {
