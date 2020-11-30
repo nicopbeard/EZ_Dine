@@ -1,5 +1,6 @@
 const express = require('express');
 const Customer = require('../models/Customer.js');
+const oktaClient = require('../lib/oktaClient');
 const router = express.Router();
 
 //API url: http://localhost:5000/customers
@@ -29,10 +30,10 @@ router.get('/', (req, res) => {
 				})
 				if(foundCustomers.length == 0)
 					res.status(404).send();
-				else 
+				else
 					res.status(200).json(foundCustomers);
 			}
-		})	
+		})
 	}
 });
 
@@ -45,7 +46,7 @@ router.get('/:user_id/orders', (req, res) => {
 				return res.status(500).send(err);
 			else if(customer.length == 0)
 				return res.status(404).json();
-			else 
+			else
 				res.status(200).json(customer[0].orders);
 		})
 	} else {
@@ -65,7 +66,7 @@ router.get('/:user_id/orders', (req, res) => {
 				})
 				if(foundOrders.length == 0)
 					res.status(404).send();
-				else 
+				else
 					res.status(200).json(foundOrders);
 			}
 		})
@@ -75,22 +76,47 @@ router.get('/:user_id/orders', (req, res) => {
 // POST new user
 router.post('/', (req, res) => {
 	//validate schema
-	if(!req.body.username || !req.body.password)
+	if(!req.body.email || !req.body.password)
 		res.status(400).send();
 	else
 	{
 		const newCustomer = {
-			username: req.body.username,
+			username: req.body.email,
 			password: req.body.password,
 			date: Date.now(),
 			orders: []
-		}
-		Customer.create(newCustomer, (err) => {
-			if(err)
-				return res.status(500).send(err);
-			else
-				res.status(200).send();
-		})
+		};
+		const newAuthUser = {
+			profile: {
+				// username: req.body.username,
+				firstName: 'Test',
+				lastName: 'Name',
+				email: req.body.email,
+				login: req.body.email,
+				// date: Date.now(),
+				// orders: []
+			},
+			credentials: {
+				password: {
+					value: req.body.password,
+				}
+			}
+		};
+		oktaClient
+				.createUser(newAuthUser)
+				.then((user) => {
+					res.status(201).send(user);
+				})
+				.catch((err) => {
+					console.log(err);
+					res.status(400).send(err);
+				});
+		// Customer.create(newCustomer, (err) => {
+		// 	if(err)
+		// 		return res.status(500).send(err);
+		// 	else
+		// 		res.status(200).send();
+		// })
 	}
 })
 
@@ -111,7 +137,7 @@ router.post('/:user_id/orders', (req, res) => {
 		}
 		const newVals = {$push: {orders: newOrder} };
 		Customer.findOneAndUpdate(query, newVals, (error) => {
-			if(error) 
+			if(error)
 				res.status(500).send();
 			else
 			 	res.status(200).send();
@@ -230,7 +256,7 @@ router.put('/:user_id/orders/:order_id', (req, res) => {
 					}
 					const newVals = {$push: {orders: newOrder} };
 					Customer.findOneAndUpdate(query, newVals, (error) => {
-						if(error) 
+						if(error)
 							res.status(500).send();
 						else
 							res.status(200).send();
