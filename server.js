@@ -39,9 +39,9 @@ app.use(cors());
 const customerRouter = require('./routes/customers');
 const employeeRouter = require('./routes/employees');
 const menuRouter = require('./routes/menu');
-app.use('/customers', customerRouter);
-app.use('/employees', employeeRouter);
-app.use('/menu', menuRouter);
+app.use('/api/customers', customerRouter);
+app.use('/api/employees', employeeRouter);
+app.use('/api/menu', menuRouter);
 
 // For serving static files from React build folder
 app.use(express.static(path.join(__dirname, 'client/build')))
