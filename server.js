@@ -7,17 +7,26 @@ const createError = require('http-errors');
 const bodyParser = require('body-parser');
 const cors = require('cors')
 var path = require('path');
+const apiErrorHandler = require('./error/apiErrorHandler');
 
 // NOTE: you must copy .env.example and name it .env before adding database credentials
 dotenv.config({ path: '.env' });
 
 const app = express();
 
+
+/**
+ * Define Routes
+ */
+const customerRouter = require('./routes/customers');
+const employeeRouter = require('./routes/employees');
+const menuRouter = require('./routes/menu');
+
+
 /**
  * Connect to MongoDB.
  */
 mongoose.Promise = global.Promise;
-
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.connection.on('error', (err) => {
     console.error(err);
@@ -25,45 +34,40 @@ mongoose.connection.on('error', (err) => {
     process.exit();
 });
 
-// view engine setup
-app.set('views', path.join(__dirname, 'client/src/components'));
-app.set('view engine', 'js');
 
+/**
+ * Register logging and other middleware
+ */
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
 
-// Set up routers for API requests
-const customerRouter = require('./routes/customers');
-const employeeRouter = require('./routes/employees');
-const menuRouter = require('./routes/menu');
-app.use('/api/customers', customerRouter);
-app.use('/api/employees', employeeRouter);
-app.use('/api/menu', menuRouter);
 
-// For serving static files from React build folder
-app.use(express.static(path.join(__dirname, 'client/build')))
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'client/build'))
-})
+/**
+ * Check environment and serve static files accordingly
+ */
+if (process.env.NODE_ENV === 'production') {
+    console.log('**RUNNING ON PRODUCTION**');
+    // For serving static files from React build folder on prod
+    app.use(express.static('client/build'));
+}
 
-// TODO: there is probably a better way to handle errors
-app.use((req, res, next) => {
-    next(createError(404));
-});
 
-// error handler
-app.use(function(err, req, res, next) {
-    // set locals, only providing error in development
-    res.locals.message = err.message;
-    res.locals.error = req.app.get('env') === 'development' ? err : {};
+/**
+ * Set up routers for API requests
+ */
+app.use('/customers', customerRouter);
+app.use('/employees', employeeRouter);
+app.use('/menu', menuRouter);
 
-    // render the error page
-    res.status(err.status || 500);
-    res.render('error');
-});
+
+/**
+ * Handle errors
+ */
+app.use(apiErrorHandler);
+
 
 const port = process.env.PORT || 5000;
 
