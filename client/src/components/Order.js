@@ -1,6 +1,6 @@
 import React from 'react';
 import { withAuth } from '@okta/okta-react';
-// import {Button, Divider, Grid, Header, Icon, Label, List} from "semantic-ui-react";
+import { Divider, List } from 'semantic-ui-react';
 
 class Order extends React.Component {
     constructor(props) {
@@ -13,23 +13,70 @@ class Order extends React.Component {
         // this.handleItemOrder = this.handleItemOrder.bind(this);
     }
 
-    async getCurrentUser() {
+    getCurrentUser() {
         this.props.auth.getUser().then((user) => {
-            this.setState({ user });
+            this.setState({ user }, () => {
+                // console.log(user._id)
+                fetch('/customers/'+user._id+'/orders')
+                    .then(res => res.json())
+                    .then(orders => this.setState({orders}, () => {
+                        console.log(orders)
+                        console.log('Orders fetched...')
+                    }))
+            });
         });
     }
-
+    
     componentDidMount() {
         this.getCurrentUser();
-        console.log('user: ' + this.state.user)
-        // fetch('/')
     }
 
+    handleSpecialRequest(itemId, e) {
+        var request = e.target.value
+        console.log('itemId: '+ itemId)
+        console.log('request: ' + request)
+        var orders = this.state.orders.map(item => {
+            if (item._id === itemId) {
+                item.special_requests = request
+            }
+            return item
+        });
+        this.setState({ orders }, () => console.log('updated order'))
+
+    }
+    
+    renderListItems = (orderItems) => {
+        return [
+            orderItems.map((item) => (
+                <List.Item key={item._id}>
+                    <List.Content>
+                        <List.Header>{item.menu_item}</List.Header>
+                        <List.Description>
+                            {'$10.99'}
+                        </List.Description>
+                        <List.Description>
+                            {'Special Requests:'}
+                        </List.Description>
+                        <input
+                            id={'input'+item._id}
+                            type={'text'}
+                            value={item.special_requests}
+                            onChange={value => this.handleSpecialRequest(item._id, value)}
+                        />
+                    </List.Content>
+                </List.Item>
+            ))
+        ]
+    }
 
     render() {
+        const orders = this.state.orders;
         return (
             <div>
-                <h2>Settle Tab</h2>
+                <h2>My Order</h2>
+                <List divided relaxed='very'>
+                    {this.renderListItems(orders)}
+                </List>
             </div>
         );
     }
