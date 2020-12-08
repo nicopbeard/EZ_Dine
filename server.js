@@ -54,9 +54,9 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // TODO: remove /api to see if it actually is building in heroku
-app.use('/api/customers', customerRouter);
-app.use('/api/employees', employeeRouter);
-app.use('/api/menu', menuRouter);
+app.use('/customers', customerRouter);
+app.use('/employees', employeeRouter);
+app.use('/menu', menuRouter);
 
 
 
