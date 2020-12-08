@@ -25,6 +25,7 @@ mongoose.connection.on('error', (err) => {
     process.exit();
 });
 
+// TODO: fix view engine/figure out wtf a view engine is
 // view engine setup
 app.set('views', path.join(__dirname, 'client/src/components'));
 app.set('view engine', 'js');
@@ -68,7 +69,7 @@ app.use((req, res, next) => {
     next(createError(404));
 });
 
-// TODO: fix this error handler, res.render is broken
+// TODO: fix this error handler, res.render is broken -> I changed it to res.json, but we should display something better
 // error handler
 app.use(function(err, req, res, next) {
     // set locals, only providing error in development
