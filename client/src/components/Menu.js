@@ -45,7 +45,7 @@ export default withAuth(
       };
 
       renderMenuItems = function (menuItems) { // called for each menu category and passed that categories items
-        return [ 
+        return [
           menuItems.map((item) => (
               <List.Item key={item.item}>
                 <List.Content>
