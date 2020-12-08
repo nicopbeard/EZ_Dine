@@ -322,4 +322,21 @@ router.delete('/:user_id/orders/:order_id', (req, res) => {
 	})
 })
 
+// DELETE all orders for a given _id
+router.delete('/:user_id/orders', (req, res) => {
+	const query = {'_id': req.params.user_id};
+	Customer.find(query,(err,results) => {
+		if (err)
+			return res.status(500).send();
+		else if(results.length == 0)
+			return res.status(404).send();
+		else
+		{
+		    results[0].orders = [];
+            results[0].save();
+            res.status(201).send();
+		}
+	})
+})
+
 module.exports = router;
