@@ -10,6 +10,7 @@ import { SecureRoute, ImplicitCallback } from '@okta/okta-react';
 import RegistrationForm from "./components/auth/RegistrationForm";
 import ProfilePage from "./components/auth/ProfilePage";
 import config from './app.config';
+import order from './components/Order';
 
 class App extends Component {
 
@@ -28,10 +29,8 @@ class App extends Component {
 						<Route path='/register' component={RegistrationForm}/>
 						{/*@TODO: add conditional here based on what user is logged into*/}
 						<SecureRoute path='/profile' component={ProfilePage}/>
-						<SecureRoute
-								path='/menu'
-								component={Menu}
-						/>
+						<SecureRoute path='/order' component={order}/>
+						<SecureRoute path='/menu' component={Menu}/>
 					</Container>
 				</main>
 			</div>
