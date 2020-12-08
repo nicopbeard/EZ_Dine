@@ -7,6 +7,8 @@ const createError = require('http-errors');
 const bodyParser = require('body-parser');
 const cors = require('cors')
 var path = require('path');
+const apiErrorHandler = require('./error/apiErrorHandler');
+
 
 // NOTE: you must copy .env.example and name it .env before adding database credentials
 dotenv.config({ path: '.env' });
@@ -25,11 +27,6 @@ mongoose.connection.on('error', (err) => {
     process.exit();
 });
 
-// TODO: fix view engine/figure out wtf a view engine is
-// view engine setup
-app.set('views', path.join(__dirname, 'client/src/components'));
-app.set('view engine', 'js');
-
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -43,45 +40,23 @@ const employeeRouter = require('./routes/employees');
 const menuRouter = require('./routes/menu');
 
 if (process.env.NODE_ENV === 'production') {
+    console.log('**RUNNING ON PROD**');
     // For serving static files from React build folder
-    console.log('******************* ENV IS PROD');
-    app.use(express.static('client/build'))
-    // app.get('*', (req, res) => {
-    //     console.log('inside static handler');
-    //     console.log(res);
-    //     res.sendFile(path.join(__dirname, 'client/build'))
-    // });
-}
+    app.use(express.static('client/build'));
+} // TODO: disable logging on prod
 
-// TODO: remove /api to see if it actually is building in heroku
 app.use('/customers', customerRouter);
 app.use('/employees', employeeRouter);
 app.use('/menu', menuRouter);
 
 
+app.use(apiErrorHandler);
 
-
-
-
-
-// TODO: there is probably a better way to handle errors
-app.use((req, res, next) => {
-    next(createError(404));
-});
-
-// TODO: fix this error handler, res.render is broken -> I changed it to res.json, but we should display something better
 // error handler
 app.use(function(err, req, res, next) {
     // set locals, only providing error in development
-    res.locals.message = err.message;
-    res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-    // render the error page
-    res.status(err.status || 500);
-    res.json({
-        message: err.message,
-        error: err
-    });
+
 });
 
 const port = process.env.PORT || 5000;
