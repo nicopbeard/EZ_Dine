@@ -4,6 +4,8 @@ import { withAuth } from '@okta/okta-react';
 
 import config from '../../app.config';
 
+const APPROVED_EMPLOYEE_CODE = 'iamanemployee';
+
 export default withAuth(
     class RegistrationForm extends React.Component {
       constructor(props) {
@@ -13,7 +15,8 @@ export default withAuth(
           lastName: '',
           email: '',
           password: '',
-          sessionToken: null
+          sessionToken: null,
+          employeeCode: ''
         };
         this.oktaAuth = new OktaAuth({ url: config.url });
         this.checkAuthentication = this.checkAuthentication.bind(this);
@@ -24,6 +27,7 @@ export default withAuth(
         this.handleLastNameChange = this.handleLastNameChange.bind(this);
         this.handleEmailChange = this.handleEmailChange.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
+        this.handleEmployeeCodeChange = this.handleEmployeeCodeChange.bind(this);
       }
 
       async checkAuthentication() {
@@ -49,31 +53,62 @@ export default withAuth(
       handlePasswordChange(e) {
         this.setState({ password: e.target.value });
       }
+      handleEmployeeCodeChange(e) {
+        this.setState({ employeeCode: e.target.value });
+      }
 
       handleSubmit(e) {
         e.preventDefault();
-        fetch('/customers', {
-          method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
-          },
-          body: JSON.stringify(this.state)
-        })
-            .then(user => {
-              this.oktaAuth
-                  .signIn({
-                    username: this.state.email,
-                    password: this.state.password
-                  })
-                  .then(res =>
-                      this.setState({
-                        sessionToken: res.sessionToken
-                      })
-                  );
-            })
-            .catch(err => console.log);
+
+        if (this.state.employeeCode.toLowerCase() === APPROVED_EMPLOYEE_CODE) {
+          fetch('/employees', {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*'
+            },
+            body: JSON.stringify(this.state)
+          })
+              .then(user => {
+                this.oktaAuth
+                    .signIn({
+                      username: this.state.email,
+                      password: this.state.password
+                    })
+                    .then(res =>
+                        this.setState({
+                          sessionToken: res.sessionToken
+                        })
+                    );
+              })
+              .catch(err => console.log);
+        } else {
+          fetch('/customers', {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*'
+            },
+            body: JSON.stringify(this.state)
+          })
+              .then(user => {
+                this.oktaAuth
+                    .signIn({
+                      username: this.state.email,
+                      password: this.state.password
+                    })
+                    .then(res =>
+                        this.setState({
+                          sessionToken: res.sessionToken
+                        })
+                    );
+              })
+              .catch(err => console.log);
+        }
+
+
       }
 
       render() {
@@ -118,6 +153,15 @@ export default withAuth(
                     id="password"
                     value={this.state.password}
                     onChange={this.handlePasswordChange}
+                />
+              </div>
+              <div className="form-element">
+                <label>Employee Code (optional):</label>
+                <input
+                    type="text"
+                    id="employeeCode"
+                    value={this.state.employeeCode}
+                    onChange={this.handleEmployeeCodeChange}
                 />
               </div>
               <input type="submit" id="submit" value="Register" />
