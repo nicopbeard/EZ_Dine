@@ -9,17 +9,24 @@ const cors = require('cors')
 var path = require('path');
 const apiErrorHandler = require('./error/apiErrorHandler');
 
-
 // NOTE: you must copy .env.example and name it .env before adding database credentials
 dotenv.config({ path: '.env' });
 
 const app = express();
 
+
+/**
+ * Define Routes
+ */
+const customerRouter = require('./routes/customers');
+const employeeRouter = require('./routes/employees');
+const menuRouter = require('./routes/menu');
+
+
 /**
  * Connect to MongoDB.
  */
 mongoose.Promise = global.Promise;
-
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.connection.on('error', (err) => {
     console.error(err);
@@ -27,6 +34,10 @@ mongoose.connection.on('error', (err) => {
     process.exit();
 });
 
+
+/**
+ * Register logging and other middleware
+ */
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -34,30 +45,29 @@ app.use(bodyParser.json());
 app.use(cors());
 
 
-// Set up routers for API requests
-const customerRouter = require('./routes/customers');
-const employeeRouter = require('./routes/employees');
-const menuRouter = require('./routes/menu');
-
+/**
+ * Check environment and serve static files accordingly
+ */
 if (process.env.NODE_ENV === 'production') {
-    console.log('**RUNNING ON PROD**');
-    // For serving static files from React build folder
+    console.log('**RUNNING ON PRODUCTION**');
+    // For serving static files from React build folder on prod
     app.use(express.static('client/build'));
-} // TODO: disable logging on prod
+}
 
+
+/**
+ * Set up routers for API requests
+ */
 app.use('/customers', customerRouter);
 app.use('/employees', employeeRouter);
 app.use('/menu', menuRouter);
 
 
+/**
+ * Handle errors
+ */
 app.use(apiErrorHandler);
 
-// error handler
-app.use(function(err, req, res, next) {
-    // set locals, only providing error in development
-
-
-});
 
 const port = process.env.PORT || 5000;
 
