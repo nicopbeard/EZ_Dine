@@ -19,7 +19,7 @@ export default withAuth(
 
       componentDidMount() {
         this.getCurrentUser();
-        fetch("/menu")
+        fetch("api/menu")
             .then(res => res.json())
             .then(menu => this.setState({menu}, () => console.log("Menu fetched...", menu)))
       }

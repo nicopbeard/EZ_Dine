@@ -35,25 +35,40 @@ app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
 
+
 // Set up routers for API requests
 const customerRouter = require('./routes/customers');
 const employeeRouter = require('./routes/employees');
 const menuRouter = require('./routes/menu');
+
+if (process.env.NODE_ENV === 'production') {
+    // For serving static files from React build folder
+    console.log('******************* ENV IS PROD');
+    app.use(express.static('client/build'))
+    // app.get('*', (req, res) => {
+    //     console.log('inside static handler');
+    //     console.log(res);
+    //     res.sendFile(path.join(__dirname, 'client/build'))
+    // });
+}
+
+// TODO: remove /api to see if it actually is building in heroku
 app.use('/api/customers', customerRouter);
 app.use('/api/employees', employeeRouter);
 app.use('/api/menu', menuRouter);
 
-// For serving static files from React build folder
-app.use(express.static(path.join(__dirname, 'client/build')))
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'client/build'))
-})
+
+
+
+
+
 
 // TODO: there is probably a better way to handle errors
 app.use((req, res, next) => {
     next(createError(404));
 });
 
+// TODO: fix this error handler, res.render is broken
 // error handler
 app.use(function(err, req, res, next) {
     // set locals, only providing error in development
@@ -62,7 +77,10 @@ app.use(function(err, req, res, next) {
 
     // render the error page
     res.status(err.status || 500);
-    res.render('error');
+    res.json({
+        message: err.message,
+        error: err
+    });
 });
 
 const port = process.env.PORT || 5000;
