@@ -24,7 +24,7 @@ export default withAuth(
             <section className="user-profile">
               <h1>User Profile</h1>
               <div>
-                <label>Name:</label>
+                <label>Name: </label>
                 <span>{this.state.user.name}</span>
               </div>
             </section>

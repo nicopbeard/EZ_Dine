@@ -9,15 +9,16 @@
   "main": "server.js",
   "scripts": {
     "client-install": "cd client && npm install",
+    "build": "cd client && npm run build",
     "start": "node server.js",
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "heroku-postbuild":"cd client && npm install && npm run build"
+    "heroku-postbuild": "npm run client-install && npm run build"
   },
-  "engines":{
-    "node":"10.x",
-    "npm":"6.x"
+  "engines": {
+    "node": "10.x",
+    "npm": "6.x"
   },
   "author": "Rational (B)rose",
   "license": "MIT",
@@ -30,7 +31,9 @@
     "@okta/oidc-middleware": "^4.0.1",
     "@okta/okta-react": "^1.2.3",
     "@okta/okta-sdk-nodejs": "^4.3.1",
+    "body-parser": "^1.19.0",
     "concurrently": "^3.5.1",
+    "cors": "^2.8.5",
     "debug": "~2.6.9",
     "dotenv": "^8.1.0",
     "express": "^4.16.2",
