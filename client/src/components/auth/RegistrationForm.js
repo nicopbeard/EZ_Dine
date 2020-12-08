@@ -55,7 +55,7 @@ export default withAuth(
         fetch('/customers', {
           method: 'POST',
           headers: {
-            Accept: 'application/json',
+            'Accept': 'application/json',
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*'
           },
