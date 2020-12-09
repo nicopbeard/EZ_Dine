@@ -52,9 +52,7 @@ router.get('/:user_id', (req, res) => {
 router.post('/', (req, res) => {
 	//validate schema
 	console.log(req.body);
-	console.log(1);
 	if(!req.body.email || !req.body.password) {
-		console.log(2);
 		res.status(400).send();
 	}
 	else
@@ -70,15 +68,12 @@ router.post('/', (req, res) => {
 			} else {
 				const newAuthUser = {
 					profile: {
-						// username: req.body.username,
 						firstName: req.body.firstName,
 						lastName: req.body.lastName,
 						email: req.body.email,
 						login: req.body.email,
 						userType: 'Employee',
 						userId: item._id
-						// date: Date.now(),
-						// orders: []
 					},
 					credentials: {
 						password: {
@@ -89,74 +84,7 @@ router.post('/', (req, res) => {
 				oktaClient
 						.createUser(newAuthUser)
 						.then((user) => {
-							// TODO: Is this needed
-							user.addToGroup('Employee')
-							res.status(200).send();
-						})
-						.catch((err) => {
-							console.log(err);
-							res.status(400).send(err);
-						});
-			}
-		})
-		// // const newEmployee = {
-		// // 	username: req.body.username,
-		// // 	password: req.body.password,
-		// // 	date: Date.now()
-		// // }
-		// Employee.create(newEmployee, (err) => {
-		// 	if(err)
-		// 		return res.status(500).send(err);
-		// 	else
-		// 		res.status(200).send();
-		// })
-	}
-})
-
-/*
-
-
-// POST new user
-router.post('/', (req, res) => {
-	//validate schema
-	if(!req.body.email || !req.body.password)
-		res.status(400).send();
-	else
-	{
-		// NB: the password is now handled by Okta
-		const newCustomer = new Customer({
-				username: req.body.email,
-				date: Date.now(),
-				orders: []
-		});
-		// TODO: lets make this not fail on duplicate key
-		newCustomer.save((err, item) => {
-			if(err) {
-				console.log(err);
-				return res.status(500).send(err);
-			} else {
-				const newAuthUser = {
-					profile: {
-						// username: req.body.username,
-						firstName: req.body.firstName,
-						lastName: req.body.lastName,
-						email: req.body.email,
-						login: req.body.email,
-						userType: 'Customer',
-						userId: item._id
-						// date: Date.now(),
-						// orders: []
-					},
-					credentials: {
-						password: {
-							value: req.body.password,
-						}
-					}
-				};
-				oktaClient
-						.createUser(newAuthUser)
-						.then((user) => {
-							user.addToGroup('Customer');
+							user.addToGroup('Employee');
 							res.status(200).send();
 						})
 						.catch((err) => {
@@ -167,8 +95,6 @@ router.post('/', (req, res) => {
 		})
 	}
 });
- */
-
 
 
 // PUT user by _id
