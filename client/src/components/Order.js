@@ -8,6 +8,7 @@ class Order extends React.Component {
         this.state = {
             user: null,
             orders: [],
+            total: 0,
         };
         this.getCurrentUser = this.getCurrentUser.bind(this);
         // this.handleItemOrder = this.handleItemOrder.bind(this);
@@ -22,6 +23,13 @@ class Order extends React.Component {
                     .then(orders => this.setState({ orders }, () => {
                         console.log(orders)
                         console.log('Orders fetched...')
+                        var total = 0
+                        orders.map(o => {
+                            if (o.price)
+                                total += o.total
+                        })
+                        console.log(total)
+                        this.setState({ total })
                     }))
             });
         });
@@ -57,7 +65,7 @@ class Order extends React.Component {
     }
 
     handleRemove(id) {
-        
+
     }
 
     renderListItems = (orderItems) => {
@@ -101,6 +109,8 @@ class Order extends React.Component {
                 <List divided relaxed='very'>
                     {this.renderListItems(orders)}
                 </List>
+                <h3>Total: ${this.state.total}</h3>
+                
             </div>
         );
     }
