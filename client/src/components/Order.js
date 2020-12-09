@@ -2,6 +2,7 @@ import React from 'react';
 import { withAuth } from '@okta/okta-react';
 import { Button, List, Icon } from 'semantic-ui-react';
 
+
 class Order extends React.Component {
     constructor(props) {
         super(props);
@@ -102,7 +103,7 @@ class Order extends React.Component {
         const orders = this.state.orders;
         return (
             <div>
-                <h2>My Order</h2>
+                <h2 style={{'textAlign' : 'center'}}>My Order</h2>
                 <List divided relaxed='very'>
                     {this.renderListItems(orders)}
                 </List>

@@ -125,11 +125,13 @@ router.post('/', (req, res) => {
 
 // POST new order for a given user
 router.post('/:user_id/orders', (req, res) => {
-	if(!req.body.menu_item)
+	if(!req.body.menu_item || !req.body.price)
 		res.status(400).send();
 	else {
-		const query = {_id: req.params.user_id};
-		let specReq = req.body.special_requests;
+        const query = {_id: req.params.user_id};
+        let specReq = req.body.special_requests;
+        if(!req.body.special_requests)
+            specReq = "none";
 		const newOrder = {
 			menu_item: req.body.menu_item,
 			special_requests : specReq,
@@ -198,7 +200,6 @@ router.put('/:user_id', (req, res) => {
 			{
 				const newCustomer = {
 					username: req.body.username,
-					password: req.body.password,
 					date: Date.now(),
 					Order: []
 				}
@@ -209,7 +210,7 @@ router.put('/:user_id', (req, res) => {
 			}
 			else
 			{
-				const newVals = {$set:{username: req.body.username, password: req.body.password, date: Date.now()}};
+				const newVals = {$set:{username: req.body.username, date: Date.now()}};
 				Customer.updateOne(query, newVals, (err2) => {
 					if(err2) return res.status(500).send(err2);
 					else res.status(200).send();
@@ -221,8 +222,7 @@ router.put('/:user_id', (req, res) => {
 
 // GET order by _id
 router.put('/:user_id/orders/:order_id', (req, res) => {
-	// console.log('got here')
-	if(!req.body.menu_item) {
+	if(!req.body.menu_item || !req.body.price) {
 		console.log(req.body)
 		res.status(400).send();
 	}
@@ -243,6 +243,7 @@ router.put('/:user_id/orders/:order_id', (req, res) => {
 					if (order._id.toString() === req.params.order_id)
 					{
 						counter = 1;
+            order.price = req.body.price;
 						order.menu_item = req.body.menu_item;
 						order.special_requests = req.body.special_requests;
 						customer[0].save();
