@@ -39,7 +39,7 @@ export default withAuth(
             </React.Fragment>
         );
         return (
-            <Segment inverted color='blue'>
+            <Segment inverted color='blue' style={{borderRadius: 0}}>
               <Menu pointing secondary inverted>
                 <Menu.Item
                     as={Link} to='/'

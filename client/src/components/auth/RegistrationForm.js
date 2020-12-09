@@ -3,7 +3,7 @@ import OktaAuth from '@okta/okta-auth-js';
 import { withAuth } from '@okta/okta-react';
 
 import config from '../../app.config';
-import {Button, Form, Input, Popup, Segment} from "semantic-ui-react";
+import {Button, Divider, Form, Grid, Header, Icon, Input, Label, Popup, Segment} from "semantic-ui-react";
 
 const APPROVED_EMPLOYEE_CODE = 'iamanemployee';
 
@@ -61,7 +61,7 @@ export default withAuth(
       }
 
       handleEmployeeCodeReveal() {
-        this.setState({shouldDisplayEmployeeCode: true});
+        this.setState({shouldDisplayEmployeeCode: !this.state.shouldDisplayEmployeeCode});
       }
 
       handleSubmit(e) {
@@ -125,8 +125,20 @@ export default withAuth(
         }
 
         return (
-            <div className='form-wrapper'>
-              <Segment raised>
+            <Grid className='form-backsplash'>
+              <Grid.Column className='form-wrapper' mobile={14} tablet={10} computer={6}>
+              <Segment raised style={{padding: 26}}>
+                <Header as='h3' icon textAlign='center'>
+                  <Icon name='signup' color='grey' circular />
+                  <Header.Content>Register for EZ-Dine</Header.Content>
+                </Header>
+                <Popup
+                    inverted
+                    position='top center'
+                    content='Have an employee code? Click here to enter it'
+                    trigger={
+                      <Label as='a' corner='right' icon='user secret' onClick={this.handleEmployeeCodeReveal}/>
+                    } />
                 <Form onSubmit={this.handleSubmit}>
                   <Form.Field>
                     <Input
@@ -181,15 +193,14 @@ export default withAuth(
                       </Form.Field>
                       : null
                   }
-                  <Popup
-                      inverted
-                      position='bottom center'
-                      content='Do you have an employee code? Click here to enter it'
-                      trigger={<Button basic size='small' icon='user secret' onClick={this.handleEmployeeCodeReveal}/>} />
-                  <Button type="submit" id="submit" primary>Register</Button>
+                  <Button type="submit" id="submit" primary icon labelPosition='right'>
+                    Register
+                    <Icon name='right arrow'/>
+                  </Button>
                 </Form>
               </Segment>
-            </div>
+              </Grid.Column>
+            </Grid>
         );
       }
     }
