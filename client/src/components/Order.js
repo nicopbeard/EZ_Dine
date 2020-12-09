@@ -26,9 +26,10 @@ class Order extends React.Component {
                         var total = 0
                         orders.map(o => {
                             if (o.price)
-                                total += o.total
+                                total += o.price
                             return o
                         })
+                        console.log('total: ' + total)
                         this.setState({ total })
                     }))
             });
@@ -74,12 +75,8 @@ class Order extends React.Component {
                 <List.Item key={item._id}>
                     <List.Content>
                         <List.Header>{item.menu_item}</List.Header>
-                        <List.Description>
-                            {'$10.99'}
-                        </List.Description>
-                        <List.Description>
-                            {'Special Requests:'}
-                        </List.Description>
+                        <List.Description>{item.price}</List.Description>
+                        <List.Description>{'Special Requests:'}</List.Description>
                         <input
                             id={'input' + item._id}
                             type={'text'}
