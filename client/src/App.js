@@ -19,14 +19,14 @@ class App extends Component {
 			<div className="App">
 				<Navigation />
 				<main>
+					<Route path='/register' component={RegistrationForm}/>
+					<Route
+							path='/login'
+							render={() => <LoginPage baseUrl={config.url}/>}
+					/>
 					<Container>
 						<Route path='/' exact component={HomePage} />
-						<Route
-								path='/login'
-								render={() => <LoginPage baseUrl={config.url}/>}
-						/>
 						<Route path='/implicit/callback' component={ImplicitCallback} />
-						<Route path='/register' component={RegistrationForm}/>
 						{/*@TODO: add conditional here based on what user is logged into*/}
 						<SecureRoute path='/profile' component={ProfilePage}/>
 						<SecureRoute path='/order' component={order}/>

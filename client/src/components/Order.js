@@ -2,7 +2,6 @@ import React from 'react';
 import { withAuth } from '@okta/okta-react';
 import { Button, List, Icon } from 'semantic-ui-react';
 
-
 class Order extends React.Component {
     constructor(props) {
         super(props);
