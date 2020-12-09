@@ -1,12 +1,12 @@
 import React from 'react';
 import { withAuth } from '@okta/okta-react';
-import { Divider, List } from 'semantic-ui-react';
+import { Button, List, Icon } from 'semantic-ui-react';
 
 class Order extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            user: null, 
+            user: null,
             orders: [],
         };
         this.getCurrentUser = this.getCurrentUser.bind(this);
@@ -17,23 +17,23 @@ class Order extends React.Component {
         this.props.auth.getUser().then((user) => {
             this.setState({ user }, () => {
                 // console.log(user._id)
-                fetch('/customers/'+user._id+'/orders')
+                fetch('/customers/' + user._id + '/orders')
                     .then(res => res.json())
-                    .then(orders => this.setState({orders}, () => {
+                    .then(orders => this.setState({ orders }, () => {
                         console.log(orders)
                         console.log('Orders fetched...')
                     }))
             });
         });
     }
-    
+
     componentDidMount() {
         this.getCurrentUser();
     }
 
     handleSpecialRequest(itemId, e) {
         var request = e.target.value
-        console.log('itemId: '+ itemId)
+        console.log('itemId: ' + itemId)
         console.log('request: ' + request)
         var orders = this.state.orders.map(item => {
             if (item._id === itemId) {
@@ -41,10 +41,26 @@ class Order extends React.Component {
             }
             return item
         });
-        this.setState({ orders }, () => console.log('updated order'))
+        //  should do put here '/:user_id/orders/:order_id'
+
+        this.setState({ orders });
+            // var updated_item = this.state.orders.find(i => i._id === itemId)
+            // console.log(updated_item)
+            // fetch('/customers/' + this.state.user._id + '/orders/' + updated_item._id, {
+            //     method: 'PUT',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     },
+            //     body: JSON.stringify(updated_item)
+            // }).then(console.log('updated order')).catch('you goofed')
+        
 
     }
-    
+
+    handleRemove(id) {
+
+    }
+
     renderListItems = (orderItems) => {
         return [
             orderItems.map((item) => (
@@ -58,11 +74,19 @@ class Order extends React.Component {
                             {'Special Requests:'}
                         </List.Description>
                         <input
-                            id={'input'+item._id}
+                            id={'input' + item._id}
                             type={'text'}
                             value={item.special_requests}
+                            placeholder='none'
                             onChange={value => this.handleSpecialRequest(item._id, value)}
                         />
+                        <Button animated='vertical' floated='right' positive basic negative compact 
+                                onClick={() => this.handleRemove(item._id)}>
+                            <Button.Content visible>Remove</Button.Content>
+                            <Button.Content hidden>
+                                <Icon name='trash' />
+                            </Button.Content>
+                        </Button>
                     </List.Content>
                 </List.Item>
             ))
