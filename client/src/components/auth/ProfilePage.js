@@ -22,7 +22,7 @@ export default withAuth(
         if (!this.state.user) return null;
         return (
             <section className="user-profile">
-              <h1>User Profile</h1>
+              <h1 style={{'textAlign' : 'center'}}>User Profile</h1>
               <div>
                 <label>Name: </label>
                 <span>{this.state.user.name}</span>
