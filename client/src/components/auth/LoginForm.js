@@ -1,7 +1,7 @@
 import React from 'react';
 import OktaAuth from '@okta/okta-auth-js';
 import { withAuth } from '@okta/okta-react';
-import {Button, Form, Grid, Header, Icon, Input, Segment} from "semantic-ui-react";
+import {Button, Form, Grid, Header, Icon, Input, Message, Segment} from "semantic-ui-react";
 
 export default withAuth(
     class LoginForm extends React.Component {
@@ -55,10 +55,6 @@ export default withAuth(
           return null;
         }
 
-        const errorMessage = this.state.error ? (
-            <span className="error-message">{this.state.error}</span>
-        ) : null;
-
         return (
             <Grid className='form-backsplash'>
               <Grid.Column className='form-wrapper' mobile={14} tablet={10} computer={6}>
@@ -67,7 +63,12 @@ export default withAuth(
                     <Icon name='sign in' color='grey' circular />
                     <Header.Content>Sign In</Header.Content>
                   </Header>
-                  <Form onSubmit={this.handleSubmit}>
+                  <Form onSubmit={this.handleSubmit} error={this.state.error}>
+                    <Message
+                        error
+                        header='There was an issue signing in'
+                        content={this.state.error}
+                    />
                     <Form.Field>
                       <Input
                           type="email"

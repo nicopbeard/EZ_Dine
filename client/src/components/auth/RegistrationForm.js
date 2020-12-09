@@ -3,7 +3,7 @@ import OktaAuth from '@okta/okta-auth-js';
 import { withAuth } from '@okta/okta-react';
 
 import config from '../../app.config';
-import {Button, Divider, Form, Grid, Header, Icon, Input, Label, Popup, Segment} from "semantic-ui-react";
+import {Button, Form, Grid, Header, Icon, Input, Label, Message, Popup, Segment} from "semantic-ui-react";
 
 const APPROVED_EMPLOYEE_CODE = 'iamanemployee';
 
@@ -18,7 +18,8 @@ export default withAuth(
           password: '',
           sessionToken: null,
           employeeCode: '',
-          shouldDisplayEmployeeCode: false
+          shouldDisplayEmployeeCode: false,
+          error: null
         };
         this.oktaAuth = new OktaAuth({ url: config.url });
         this.checkAuthentication = this.checkAuthentication.bind(this);
@@ -89,7 +90,10 @@ export default withAuth(
                         })
                     );
               })
-              .catch(err => console.log);
+              .catch((err) => {
+                console.log(err);
+                this.setState({error: err.message})
+              });
         } else {
           fetch('/customers', {
             method: 'POST',
@@ -110,9 +114,15 @@ export default withAuth(
                         this.setState({
                           sessionToken: res.sessionToken
                         })
-                    );
+                    ).catch((err) => {
+                      this.setState({error: err.message})
+                  // TODO: when we hit an error like this we need to remove the mongo user record
+                })
               })
-              .catch(err => console.log);
+              .catch((err) => {
+                console.log(err);
+                this.setState({error: err.message})
+              });
         }
 
 
@@ -139,7 +149,12 @@ export default withAuth(
                     trigger={
                       <Label as='a' corner='right' icon='user secret' onClick={this.handleEmployeeCodeReveal}/>
                     } />
-                <Form onSubmit={this.handleSubmit}>
+                <Form onSubmit={this.handleSubmit} error={this.state.error}>
+                  <Message
+                      error
+                      header='Could not register account'
+                      content={this.state.error}
+                  />
                   <Form.Field>
                     <Input
                         type="email"

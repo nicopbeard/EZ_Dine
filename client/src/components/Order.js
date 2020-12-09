@@ -1,12 +1,12 @@
 import React from 'react';
 import { withAuth } from '@okta/okta-react';
-import { Divider, List } from 'semantic-ui-react';
+import { List } from 'semantic-ui-react';
 
 class Order extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            user: null, 
+            user: null,
             orders: [],
         };
         this.getCurrentUser = this.getCurrentUser.bind(this);
@@ -26,7 +26,7 @@ class Order extends React.Component {
             });
         });
     }
-    
+
     componentDidMount() {
         this.getCurrentUser();
     }
@@ -44,7 +44,7 @@ class Order extends React.Component {
         this.setState({ orders }, () => console.log('updated order'))
 
     }
-    
+
     renderListItems = (orderItems) => {
         return [
             orderItems.map((item) => (
