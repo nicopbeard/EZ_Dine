@@ -86,7 +86,7 @@ router.post('/', (req, res) => {
 				date: Date.now(),
 				orders: []
 		});
-		// TODO: lets make this not fail on duplicate key
+
 		newCustomer.save((err, item) => {
 			if(err) {
 				console.log(err);
@@ -94,15 +94,12 @@ router.post('/', (req, res) => {
 			} else {
 				const newAuthUser = {
 					profile: {
-						// username: req.body.username,
 						firstName: req.body.firstName,
 						lastName: req.body.lastName,
 						email: req.body.email,
 						login: req.body.email,
 						userType: 'Customer',
 						userId: item._id
-						// date: Date.now(),
-						// orders: []
 					},
 					credentials: {
 						password: {
@@ -122,6 +119,7 @@ router.post('/', (req, res) => {
 						});
 			}
 		})
+
 	}
 });
 
@@ -131,15 +129,14 @@ router.post('/:user_id/orders', (req, res) => {
 		res.status(400).send();
 	else {
 		const query = {_id: req.params.user_id};
-		let specReq;
-		if(!req.body.special_requests) specReq = "none";
-		else specReq = req.body.special_requests;
+		let specReq = req.body.special_requests;
 		const newOrder = {
 			menu_item: req.body.menu_item,
 			special_requests : specReq,
 			status: "ordered",
-			date: Date.now()
-		}
+			date: Date.now(),
+			price: req.body.price
+		};
 		const newVals = {$push: {orders: newOrder} };
 		Customer.findOneAndUpdate(query, newVals, (error) => {
 			if(error)
@@ -261,7 +258,8 @@ router.put('/:user_id/orders/:order_id', (req, res) => {
 						menu_item: req.body.menu_item,
 						special_requests : specReq,
 						status: "ordered",
-						date: Date.now()
+						date: Date.now(),
+						price: req.body.price
 					}
 					const newVals = {$push: {orders: newOrder} };
 					Customer.findOneAndUpdate(query, newVals, (error) => {
