@@ -1,6 +1,6 @@
 import React from 'react';
 import { withAuth } from '@okta/okta-react';
-import { List } from 'semantic-ui-react';
+import { Button, List, Icon } from 'semantic-ui-react';
 
 class Order extends React.Component {
     constructor(props) {
@@ -8,6 +8,7 @@ class Order extends React.Component {
         this.state = {
             user: null,
             orders: [],
+            total: 0,
         };
         this.getCurrentUser = this.getCurrentUser.bind(this);
         // this.handleItemOrder = this.handleItemOrder.bind(this);
@@ -17,11 +18,19 @@ class Order extends React.Component {
         this.props.auth.getUser().then((user) => {
             this.setState({ user }, () => {
                 // console.log(user._id)
-                fetch('/customers/'+user._id+'/orders')
+                fetch('/customers/' + user._id + '/orders')
                     .then(res => res.json())
-                    .then(orders => this.setState({orders}, () => {
+                    .then(orders => this.setState({ orders }, () => {
                         console.log(orders)
                         console.log('Orders fetched...')
+                        var total = 0
+                        orders.map(o => {
+                            if (o.price)
+                                total += o.price
+                            return o
+                        })
+                        console.log('total: ' + total)
+                        this.setState({ total })
                     }))
             });
         });
@@ -33,15 +42,30 @@ class Order extends React.Component {
 
     handleSpecialRequest(itemId, e) {
         var request = e.target.value
-        console.log('itemId: '+ itemId)
-        console.log('request: ' + request)
+        // console.log('itemId: ' + itemId)
+        // console.log('request: ' + request)
         var orders = this.state.orders.map(item => {
             if (item._id === itemId) {
                 item.special_requests = request
             }
             return item
         });
-        this.setState({ orders }, () => console.log('updated order'))
+        this.setState({ orders });
+    }
+
+    submitRequest(id) {
+        var updated_item = this.state.orders.find(i => i._id === id)
+        console.log(updated_item)
+        fetch('/customers/' + this.state.user._id + '/orders/' + id, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updated_item)
+        }).then(console.log('updated order')).catch('you goofed')
+    }
+
+    handleRemove(id) {
 
     }
 
@@ -51,18 +75,23 @@ class Order extends React.Component {
                 <List.Item key={item._id}>
                     <List.Content>
                         <List.Header>{item.menu_item}</List.Header>
-                        <List.Description>
-                            {'$10.99'}
-                        </List.Description>
-                        <List.Description>
-                            {'Special Requests:'}
-                        </List.Description>
+                        <List.Description>{item.price}</List.Description>
+                        <List.Description>{'Special Requests:'}</List.Description>
                         <input
-                            id={'input'+item._id}
+                            id={'input' + item._id}
                             type={'text'}
                             value={item.special_requests}
+                            placeholder='none'
+                            onBlur={() => this.submitRequest(item._id)}
                             onChange={value => this.handleSpecialRequest(item._id, value)}
                         />
+                        <Button animated='vertical' floated='right' positive basic negative compact 
+                                onClick={() => this.handleRemove(item._id)}>
+                            <Button.Content visible>Remove</Button.Content>
+                            <Button.Content hidden>
+                                <Icon name='trash' />
+                            </Button.Content>
+                        </Button>
                     </List.Content>
                 </List.Item>
             ))
@@ -73,10 +102,12 @@ class Order extends React.Component {
         const orders = this.state.orders;
         return (
             <div>
-                <h2>My Order</h2>
+                <h2 style={{'textAlign' : 'center'}}>My Order</h2>
                 <List divided relaxed='very'>
                     {this.renderListItems(orders)}
                 </List>
+                <h3>Total: ${this.state.total}</h3>
+                
             </div>
         );
     }
