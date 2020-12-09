@@ -28,7 +28,7 @@ export default withAuth(
         console.log(this.state);
         console.log(item.title);
         console.log(item.price);
-        const menuItem = {menu_item: item.title, special_requests: 'none'};
+        const menuItem = {menu_item: item.title, special_requests: '', price: item.price};
         // @TODO: we should prob also track prices of items as they are ordered to sum the "total bill" easily
         fetch(`/customers/${this.state.user._id}/orders`, {
           method: 'POST',
