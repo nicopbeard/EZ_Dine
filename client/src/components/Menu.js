@@ -92,7 +92,7 @@ export default withAuth(
     });
     return (
         <div>
-          <h2>Todays Menu</h2>
+          <h2 style={{'textAlign' : 'center'}}>Todays Menu</h2>
           <Grid columns={4} divided>
             <Grid.Row>
               {/*TODO: look into three column fluid that stacks them as needed*/}
