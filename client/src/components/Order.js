@@ -33,32 +33,31 @@ class Order extends React.Component {
 
     handleSpecialRequest(itemId, e) {
         var request = e.target.value
-        console.log('itemId: ' + itemId)
-        console.log('request: ' + request)
+        // console.log('itemId: ' + itemId)
+        // console.log('request: ' + request)
         var orders = this.state.orders.map(item => {
             if (item._id === itemId) {
                 item.special_requests = request
             }
             return item
         });
-        //  should do put here '/:user_id/orders/:order_id'
-
         this.setState({ orders });
-            // var updated_item = this.state.orders.find(i => i._id === itemId)
-            // console.log(updated_item)
-            // fetch('/customers/' + this.state.user._id + '/orders/' + updated_item._id, {
-            //     method: 'PUT',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //     },
-            //     body: JSON.stringify(updated_item)
-            // }).then(console.log('updated order')).catch('you goofed')
-        
+    }
 
+    submitRequest(id) {
+        var updated_item = this.state.orders.find(i => i._id === id)
+        console.log(updated_item)
+        fetch('/customers/' + this.state.user._id + '/orders/' + id, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updated_item)
+        }).then(console.log('updated order')).catch('you goofed')
     }
 
     handleRemove(id) {
-
+        
     }
 
     renderListItems = (orderItems) => {
@@ -78,6 +77,7 @@ class Order extends React.Component {
                             type={'text'}
                             value={item.special_requests}
                             placeholder='none'
+                            onBlur={() => this.submitRequest(item._id)}
                             onChange={value => this.handleSpecialRequest(item._id, value)}
                         />
                         <Button animated='vertical' floated='right' positive basic negative compact 
