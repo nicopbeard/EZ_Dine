@@ -221,8 +221,11 @@ router.put('/:user_id', (req, res) => {
 
 // GET order by _id
 router.put('/:user_id/orders/:order_id', (req, res) => {
-	if(!req.body.menu_item)
+	// console.log('got here')
+	if(!req.body.menu_item) {
+		console.log(req.body)
 		res.status(400).send();
+	}
 	else
 	{
 		const query = {_id:req.params.user_id};
@@ -241,6 +244,7 @@ router.put('/:user_id/orders/:order_id', (req, res) => {
 					{
 						counter = 1;
 						order.menu_item = req.body.menu_item;
+						order.special_requests = req.body.special_requests;
 						customer[0].save();
 						res.status(200).send();
 					}
