@@ -27,8 +27,8 @@ class Order extends React.Component {
                         orders.map(o => {
                             if (o.price)
                                 total += o.total
+                            return o
                         })
-                        console.log(total)
                         this.setState({ total })
                     }))
             });
