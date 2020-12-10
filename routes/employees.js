@@ -132,59 +132,29 @@ router.put('/:user_id', (req, res) => {
 
 // PUT order by _id
 router.put('/:user_id/orders', (req, res) => {
-    console.log(req.body);
-	//if(!req.body.menu_item || !req.body.price) {
-	//	console.log(req.body)
-	//	res.status(400).send();
-	//}
-	//else
-	//{
-		const query = {_id:req.params.user_id};
-		Employee.find(query, (err, employee) => {
-			if(err)
-				return res.status(500).send(err);
-			else if(employee.length == 0)
-				return res.status(404).json();
-			else
-			{
-				let orders = employee[0].orders;
-				var counter = 0;
-				//iterate through the orders to find the corresponding one
-				orders.forEach((order) => {
-					if (order._id.toString() === req.params.order_id)
-					{
-						counter = 1;
-                        order.price = req.body.price;
-                        order.menu_item = req.body.menu_item;
-                        order.status = req.body.status;
-						order.special_requests = req.body.special_requests;
-						employee[0].save();
-						res.status(200).send();
-					}
-				})
-
-				//if the specified order_id didn't match any results
-				if(counter === 0)
-				{
-					// const query2 = {_id: req.params.user_id};
-					const newOrder = {
-						menu_item: req.body.menu_item,
-						special_requests : specReq,
-						status: "ordered",
-						date: Date.now(),
-						price: req.body.price
-					}
-					const newVals = {$push: {orders: newOrder} };
-					Employee.findOneAndUpdate(query, newVals, (error) => {
-						if(error)
-							res.status(500).send();
-						else
-							res.status(200).send();
-					})
-				}
-			}
-		})
-	//}
+    const query = {_id:req.params.user_id};
+    Employee.find(query, (err, employee) => {
+        if(err)
+            return res.status(500).send(err);
+        else if(employee.length == 0)
+            return res.status(404).json();
+        else
+        {
+            req.body.map(order => {
+                const newOrder = {
+                    customer_email : order.customer_email,
+                    menu_item : order.menu_item,
+                    special_requests : order.special_requests,
+                    status : order.status,
+                    date : order.date,
+                    price: order.price
+                }
+                employee[0].orders.push(newOrder);
+            })
+            employee[0].save();
+            res.status(200).send();
+        }
+    })
 })
 
 // DELETE user by _id
