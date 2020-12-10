@@ -36,8 +36,16 @@ There are three API routes: customers, employees, and menu. Every route supports
 ### Authentication
 
 ### Components
+HomePage - the home page simply displays "Welcome to EZ Dine" with a gourmet dinner picture below as a simple introduction to the application.
+
+Menu - the menu page uses our api route for /menu to pull all the current menu items. As soon as a customer adds a menu item to their order, it triggers an API request that posts that menu item to their orders subcollection, which can then be viewed in the Orders tab from the navigation bar.
+
+Order - the Order tab displays all the current orders for the corresponding customer, adding up all the prices for a grand total at the bottom. Customers can remove individual orders and checkout once they're satisfied with their order. Removing individual orders triggers an API request to just delete that particular menu item from the customer's order subcollection while checking out removes all orders from their orders subcollection and sends them through a PUT request to the kitchen with the new status of "in progress."
 
 ### Deployment
+
+### Live Application Link
+https://agile-dusk-39199.herokuapp.com/
 
 ## App Info
 ### Version
