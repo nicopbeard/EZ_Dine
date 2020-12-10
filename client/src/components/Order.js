@@ -66,9 +66,15 @@ class Order extends React.Component {
     }
 
     handleRemove(id) {
-        var item = this.state.orders.find(i => i._id === id)
-        console.log(item)
         fetch('/customers/' + this.state.user._id + '/orders/' + id, {
+            method: 'DELETE'
+        }).then(console.log('deleted order')).catch('you goofed')
+        window.location.reload();
+    }
+
+    handlePay() {
+        console.log(this.state.user._id)
+        fetch('/customers/' + this.state.user._id + '/orders', {
             method: 'DELETE'
         }).then(console.log('deleted order')).catch('you goofed')
         window.location.reload();
@@ -112,7 +118,6 @@ class Order extends React.Component {
                     {this.renderListItems(orders)}
                 </List>
                 <h3>Total: ${this.state.total}</h3>
-                
             </div>
         );
     }
