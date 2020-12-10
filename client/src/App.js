@@ -11,6 +11,7 @@ import RegistrationForm from "./components/auth/RegistrationForm";
 import ProfilePage from "./components/auth/ProfilePage";
 import config from './app.config';
 import order from './components/Order';
+import Submitted from './components/Submitted';
 
 class App extends Component {
 
@@ -31,6 +32,7 @@ class App extends Component {
 						<SecureRoute path='/profile' component={ProfilePage}/>
 						<SecureRoute path='/order' component={order}/>
 						<SecureRoute path='/menu' component={Menu}/>
+						<SecureRoute path='/submitted' component={Submitted}/>
 					</Container>
 				</main>
 			</div>
