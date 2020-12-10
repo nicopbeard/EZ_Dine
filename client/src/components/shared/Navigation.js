@@ -7,8 +7,9 @@ export default withAuth(
   class Navigation extends React.Component {
     constructor(props) {
       super(props);
-      this.state = { authenticated: null };
+      this.state = { authenticated: null, user: null };
       this.checkAuthentication = this.checkAuthentication.bind(this);
+      this.getCurrentUser = this.getCurrentUser.bind(this);
       this.checkAuthentication();
     }
 
@@ -26,16 +27,22 @@ export default withAuth(
       });
     }
 
+    componentDidMount() {
+      // this.getCurrentUser();
+    }
+
     componentDidUpdate() {
       this.checkAuthentication();
     }
 
     render() {
       if (this.state.authenticated === null) return null;
+      if (this.state.user === null) return null;
       const authNav = this.state.authenticated ? (
         <React.Fragment>
           <Menu.Item as={Link} to='/profile' name='profile' />
-          {this.state.userType !== 'Employee' ? (
+          {
+            this.state.user.userType !== 'Employee' ? (
             // Customer navigation
             <React.Fragment>
               <Menu.Item as={Link} to='/menu' name='menu' />
@@ -44,8 +51,7 @@ export default withAuth(
           ) : (
             // employee navigation
             <React.Fragment>
-              <Menu.Item as={Link} to='/serverView' name='serverView'/>
-              <Menu.Item as={Link} to='/order' name='order' />
+              <Menu.Item as={Link} to='/serverView' name='Current Orders'/>
             </React.Fragment>)}
           <Menu.Item onClick={() => this.props.auth.logout()} name='Sign out' />
         </React.Fragment>
