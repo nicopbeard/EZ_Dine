@@ -26,49 +26,15 @@ export default withAuth(
       }
 
       getOrders() {
-        const fetchedOrders = [
-              {
-                first_name: 'Elliot',
-                menu_item: 'pasta',
-                special_requests: 'light sauce',
-                status: 'in progress',
-                date: Date.now(),
-                price: 10.99
-              },
-              {
-                first_name: 'Elliot',
-                menu_item: 'breadsticks',
-                special_requests: '',
-                status: 'in progress',
-                date: Date.now(),
-                price: 10.99
-              },
-              {
-                first_name: 'Elliot',
-                menu_item: 'pasta',
-                special_requests: 'light sauce',
-                status: 'in progress',
-                date: Date.now(),
-                price: 10.99
-              },
-              {
-                first_name: 'Elliot',
-                menu_item: 'pasta',
-                special_requests: 'light sauce',
-                status: 'in progress',
-                date: Date.now(),
-                price: 10.99
-              }
-        ];
-        this.setState({orders: fetchedOrders});
-        console.log(this.state);
+        fetch("/employees/5fd19b6651f6abc1e843e083/")
+            .then(res => res.json())
+            .then(kitchenUser => this.setState({orders: kitchenUser.orders}, () => console.log("Orders Fetched...", kitchenUser.orders)))
       }
-
 
       render() {
         const currentOrders = this.state.orders.map((order) => {
           return {
-            header: order.first_name,
+            header: order.customer_email,
             description: order.status,
             meta: order.menu_item,
           }
