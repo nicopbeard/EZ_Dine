@@ -45,14 +45,18 @@ There are three API routes: customers, employees, and menu. Every route supports
 - Okta also manages our two user groups: Customers and Employees, and uses specific group rules to assign each within their system.
 - Okta provides us with the user's type, which we then use to selectively render components based on what that user needs to see
     - Customers see a menu and orders menu button that they can use to select menu items, modify any special requests, and "check out"
-    - Employees just see a current orders menu button, which takes them to the Point of Sale/Kitchen view that employees would typically use while preparing different foods 
+    - Employees just see a current orders0 menu button, which takes them to the Point of Sale/Kitchen view that employees would typically use while preparing different foods 
 
 ### Components
-HomePage - the home page simply displays "Welcome to EZ Dine" with a gourmet dinner picture below as a simple introduction to the application.
+**HomePage** - The home page simply displays "Welcome to EZ Dine" with a gourmet dinner picture below as a simple introduction to the application.
 
-Menu - the menu page uses our api route for /menu to pull all the current menu items. As soon as a customer adds a menu item to their order, it triggers an API request that posts that menu item to their orders subcollection, which can then be viewed in the Orders tab from the navigation bar.
+**Menu** - The menu page uses our api route for /menu to pull all the current menu items. As soon as a customer adds a menu item to their order, it triggers an API request that posts that menu item to their orders subcollection, which can then be viewed in the Orders tab from the navigation bar.
 
-Order - the Order tab displays all the current orders for the corresponding customer, adding up all the prices for a grand total at the bottom. Customers can remove individual orders and checkout once they're satisfied with their order. Removing individual orders triggers an API request to just delete that particular menu item from the customer's order subcollection while checking out removes all orders from their orders subcollection and sends them through a PUT request to the kitchen with the new status of "in progress."
+**Order** - The Order tab displays all the current orders for the corresponding customer, adding up all the prices for a grand total at the bottom. Customers can remove individual orders and checkout once they're satisfied with their order. Removing individual orders triggers an API request to just delete that particular menu item from the customer's order subcollection while checking out removes all orders from their orders subcollection and sends them through a PUT request to the kitchen with the new status of "in progress."
+
+**Register** - The register component allows both types of users to register. Customers register by filling out the form normally, while Employees can register by clicking the icon on the top right corner of the form container to reveal a field for an 'employee code'. The employee code is currently set to accept 'iamanemployee' (not case-sensitive). 
+
+**Login** - How users who already have accounts can login (both Customers and Employees).
 
 ### Deployment
 - This project is set up with integrated heroku deployment
@@ -60,7 +64,7 @@ Order - the Order tab displays all the current orders for the corresponding cust
 - Heroku will then build the app for the production environment, such that both the backend server and front-end react SPA can be hosted from the same dyno
 
 ### Database
-- This project uses mongodb, but for simplicity (and to avoid unnecesary test data generation), we've included our `.env` file so it should connect to the instance we've already populated
+- This project uses mongodb, but for simplicity (and to avoid unnecessary test data generation), we've included our `.env` file so it should connect to the instance we've already populated
 
 ### Live Application Link
 https://agile-dusk-39199.herokuapp.com/
