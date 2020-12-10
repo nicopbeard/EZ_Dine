@@ -63,6 +63,19 @@ Our application supports signing in as an employee or a customer. Employees regi
 username: kitchen@ez-dine.com
 password: AnxiousPirate0
 
+### Database
+This project uses mongodb, but for simplicity (and to avoid unnecesary test data generation), we've included our `.env` file so it should connect to the instance we've already populated
+
+Routes:
+- /customers :  routes for handling requests for all customer users
+- /customers/... :  routes for handling requests for a unique customer user
+- /customers/.../orders :  routes for handling requests for a unique customer users orders
+- /customers/.../orders/... :  routes for handling requests for a unique customer users unique order
+- /employees   :  routes for handling requests for employee users
+- /customers/...  :  routes for handling requests for a unique employee user
+- /customers/.../orders :  routes for handling requests for a unique employee users orders
+- /menu  :  routes for handling requests for menu
+
 ### Deployment
 - This project is set up with integrated heroku deployment
 - To trigger a deploy, simply merge a pull request into branch `heroku`
@@ -74,14 +87,6 @@ password: AnxiousPirate0
 ### Live Application Link
 https://agile-dusk-39199.herokuapp.com/
 
-/customers                  -  routes for handling requests for all customer users
-/customers/...              -  routes for handling requests for a unique customer user
-/customers/.../orders       -  routes for handling requests for a unique customer users orders
-/customers/.../orders/...   -  routes for handling requests for a unique customer users unique order
-/employees                  -  routes for handling requests for employee users
-/customers/...              -  routes for handling requests for a unique employee user
-/customers/.../orders       -  routes for handling requests for a unique employee users orders
-/menu                       -  routes for handling requests for menu
 
 ## App Info
 ### Version
