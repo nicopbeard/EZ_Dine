@@ -54,6 +54,11 @@ Menu - the menu page uses our api route for /menu to pull all the current menu i
 
 Order - the Order tab displays all the current orders for the corresponding customer, adding up all the prices for a grand total at the bottom. Customers can remove individual orders and checkout once they're satisfied with their order. Removing individual orders triggers an API request to just delete that particular menu item from the customer's order subcollection while checking out removes all orders from their orders subcollection and sends them through a PUT request to the kitchen with the new status of "in progress."
 
+### Customers vs Employees
+Our application supports signing in as an employee or a customer. Employees register using the code "iamanemployee" and clicking on the top right icon in the form. The customer interface supports viewing the menu, their current orders, their profile, and the home page while the employee interface supports the home page, the employee's current profile, and the current orders that have been placed organized by user. Both employees and customers can sign out. We have one main employee that we use to route all the customer orders placed. The login information for this employee is:
+username: kitchen@ez-dine.com
+password: AnxiousPirate0
+
 ### Deployment
 - This project is set up with integrated heroku deployment
 - To trigger a deploy, simply merge a pull request into branch `heroku`
