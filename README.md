@@ -37,16 +37,19 @@ There are three API routes: customers, employees, and menu. Every route supports
 
 ### Components
 
+### Database
+- This project uses mongodb, but for simplicity (and to avoid unnecesary test data generation), we've included our `.env` file so it should connect to the instance we've already populated
+- /customers                  -  routes for handling requests for all customer users
+- /customers/...              -  routes for handling requests for a unique customer user
+- /customers/.../orders       -  routes for handling requests for a unique customer users orders
+- /customers/.../orders/...   -  routes for handling requests for a unique customer users unique order
+- /employees                  -  routes for handling requests for employee users
+- /customers/...              -  routes for handling requests for a unique employee user
+- /customers/.../orders       -  routes for handling requests for a unique employee users orders
+- /menu                       -  routes for handling requests for menu
+
 ### Deployment
 
-/customers                  -  routes for handling requests for all customer users
-/customers/...              -  routes for handling requests for a unique customer user
-/customers/.../orders       -  routes for handling requests for a unique customer users orders
-/customers/.../orders/...   -  routes for handling requests for a unique customer users unique order
-/employees                  -  routes for handling requests for employee users
-/customers/...              -  routes for handling requests for a unique employee user
-/customers/.../orders       -  routes for handling requests for a unique employee users orders
-/menu                       -  routes for handling requests for menu
 
 ## App Info
 ### Version
