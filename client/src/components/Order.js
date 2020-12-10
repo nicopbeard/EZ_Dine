@@ -68,15 +68,35 @@ class Order extends React.Component {
     handleRemove(id) {
         fetch('/customers/' + this.state.user._id + '/orders/' + id, {
             method: 'DELETE'
-        }).then(console.log('deleted order')).catch('you goofed')
-        window.location.reload();
+        }).then(console.log('deleted order'))
+        .then(() => {
+            var orders = this.state.orders.filter(item => item._id !== id);
+            var total = 0
+            orders.map(o => {
+                if (o.price)
+                    total += o.price
+                return o
+            })
+            console.log('total: ' + total)
+            this.setState({ total, orders})
+        }).catch('you goofed')
     }
 
     handlePay() {
         fetch('/customers/' + this.state.user._id + '/orders', {
             method: 'DELETE'
-        }).then(console.log('deleted order')).catch('you goofed')
-        window.location.reload();
+        }).then(console.log('deleted order'))
+        .then(() => {
+            var orders = []
+            var total = 0
+            orders.map(o => {
+                if (o.price)
+                    total += o.price
+                return o
+            })
+            console.log('total: ' + total)
+            this.setState({ total, orders})
+        }).catch('you goofed')
     }
 
     renderListItems = (orderItems) => {
