@@ -1,29 +1,49 @@
-[![Work in Repl.it](https://classroom.github.com/assets/work-in-replit-14baed9a392b3a25080506f3b7b6d57f295ec2978f6f33ec97e36a161684cbe9.svg)](https://classroom.github.com/online_ide?assignment_repo_id=324900&assignment_repo_type=GroupAssignmentRepo)
-# Final Project
+# EZ-Dine
 
-## Due Thursday, December 3, 2020
+> EZ Dine is a simple web application for in-restaurant ordering to reduce wait staff cost and streamline the overall restaurant service. It was inspired by Nico's dad, who owned a restaurant for over 20 years and constantly vented his frustrations. He didn't think it made sense to have servers, especially considering they make so much money, get to pocket the entirety of the tip, and constantly make mistakes when attending to customers. Nico's dad thought it would make a lot more sense to have an application where people could enjoy their meal without having to deal with going through a server to obtain their food, other necessities, or the paycheck. Our version of EZ Dine obviously isn't what the full version would look like, but gives a good outlook as to what the full version would expect to be like.
 
-### Build a web app in a team of 5-6
+### Team Members and Roles
+Nicolas Beard - Backend (Rest API’s)
+Jackson Aguas - Backend (Rest APIs)
+Griffin Reichert - Frontend (React)
+Elliot Scribner - Fullstack Developer 
+Blake Wilkey - Fullstack Developer
 
-### Requirements:
-* Must have user accounts and different user roles
-* Must use a database
-* Must have interactive UI
-* Must use a library or framework not discussed/used in class
-* Must use an outside REST API in some way
-* Must deploy your application in some publicly accessible way (Heroku, Digital Ocean, AWS, etc)
+## Quick Start
 
-### Instructions
-Build your team and write a document describing your application to me by Thursday, November 12, 2020. I will approve your web application idea. In your paper, include:
-* the name of your application
-* name and roles of all your team members
-* its functionality
-* user story/use case
-* technical design 
-* tools/libraries/frameworks you will use
+``` bash
+# Install dependencies for server
+npm install
 
-### Final deliverable:
-* Codebase in Github Repo
-* README describing your project, with all of the information outlined above (team members, application name, description, etc). You will also include detailed instructions of how to install and run your application, and what API keys, databases, etc are needed to run your application. You will also provide a link to a live demo of your application.
-* Final Presentation and Demo
-  * You will prepare a 5 minute presentation and demo of your application in class during during a zoom call with me (time TBD)
+# Install dependencies for client
+npm run client-install
+
+# Run the client & server with concurrently
+npm run dev
+
+# Run the Express server only
+npm run server
+
+# Run the React client only
+npm run client
+
+# Server runs on http://localhost:5000 and client on http://localhost:3000
+```
+
+### API's
+There are three API routes: customers, employees, and menu. Every route supports some form of get, post, put, and delete depending on the necessities of the route. The corresponding routes are defined at the top of each javascript file containing the routes, but are /customers, /employees, and /menu for customers, employees, and the menu respectively. The routes build on the route URL's for different API requests.
+
+### Authentication
+
+### Components
+
+### Deployment
+
+## App Info
+### Version
+
+1.0.0
+
+### License
+
+This project is licensed under the MIT License
