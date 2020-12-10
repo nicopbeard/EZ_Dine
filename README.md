@@ -41,14 +41,14 @@ There are three API routes: customers, employees, and menu. Every route supports
 This project uses mongodb, but for simplicity (and to avoid unnecesary test data generation), we've included our `.env` file so it should connect to the instance we've already populated
 
 Routes:
-- /customers       \t           :  routes for handling requests for all customer users
-- /customers/...              :  routes for handling requests for a unique customer user
-- /customers/.../orders    \t   :  routes for handling requests for a unique customer users orders
-- /customers/.../orders/... \t  :  routes for handling requests for a unique customer users unique order
-- /employees            \t      :  routes for handling requests for employee users
-- /customers/...        \t      :  routes for handling requests for a unique employee user
-- /customers/.../orders    \t   :  routes for handling requests for a unique employee users orders
-- /menu            \t           :  routes for handling requests for menu
+- /customers :  routes for handling requests for all customer users
+- /customers/... :  routes for handling requests for a unique customer user
+- /customers/.../orders :  routes for handling requests for a unique customer users orders
+- /customers/.../orders/... :  routes for handling requests for a unique customer users unique order
+- /employees   :  routes for handling requests for employee users
+- /customers/...  :  routes for handling requests for a unique employee user
+- /customers/.../orders :  routes for handling requests for a unique employee users orders
+- /menu  :  routes for handling requests for menu
 
 ### Deployment
 
