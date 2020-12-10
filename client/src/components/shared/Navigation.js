@@ -44,6 +44,7 @@ export default withAuth(
           ) : (
             // employee navigation
             <React.Fragment>
+              <Menu.Item as={Link} to='/serverView' name='serverView'/>
               <Menu.Item as={Link} to='/order' name='order' />
             </React.Fragment>)}
           <Menu.Item onClick={() => this.props.auth.logout()} name='Sign out' />

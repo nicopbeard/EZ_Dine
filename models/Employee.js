@@ -4,7 +4,7 @@ mongoose.set('useFindAndModify', false);
 
 const employeeSchema = new mongoose.Schema({
     username : {type : String, unique : true},
-    date : Date
+    date : Date,
  });
 
 const Employee = mongoose.model('Employee', employeeSchema);
