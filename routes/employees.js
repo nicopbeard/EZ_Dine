@@ -130,6 +130,33 @@ router.put('/:user_id', (req, res) => {
 	})
 })
 
+// PUT order by _id
+router.put('/:user_id/orders', (req, res) => {
+    const query = {_id:req.params.user_id};
+    Employee.find(query, (err, employee) => {
+        if(err)
+            return res.status(500).send(err);
+        else if(employee.length == 0)
+            return res.status(404).json();
+        else
+        {
+            req.body.map(order => {
+                const newOrder = {
+                    customer_email : order.customer_email,
+                    menu_item : order.menu_item,
+                    special_requests : order.special_requests,
+                    status : order.status,
+                    date : order.date,
+                    price: order.price
+                }
+                employee[0].orders.push(newOrder);
+            })
+            employee[0].save();
+            res.status(200).send();
+        }
+    })
+})
+
 // DELETE user by _id
 router.delete('/:user_id', (req, res) => {
 	const query = {'_id': req.params.user_id};
