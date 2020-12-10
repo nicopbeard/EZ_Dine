@@ -30,6 +30,7 @@ export default withAuth(
                   <Menu.Item as={Link} to='/profile' name='profile'/>
                   <Menu.Item as={Link} to='/menu' name='menu'/>
                   <Menu.Item as={Link} to='/order' name='order'/>
+                  <Menu.Item as={Link} to='/serverView' name='serverView'/>
                   <Menu.Item onClick={() => this.props.auth.logout()} name='Sign out'/>
                 </React.Fragment>
         ) : (
