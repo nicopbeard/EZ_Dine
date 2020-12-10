@@ -59,7 +59,6 @@ export default withAuth(
                       </Label>
                     </Grid.Column>
                     <Grid.Column>
-                      {/*TODO: This button should open a modal with options to for "special requests"*/}
                       <Button animated='vertical' title={item.item} price={item.price} floated='right' positive basic compact onClick={this.handleItemOrder}>
                         <Button.Content visible>Add to Tab</Button.Content>
                         <Button.Content hidden>
