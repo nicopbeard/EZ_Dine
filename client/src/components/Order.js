@@ -73,7 +73,6 @@ class Order extends React.Component {
     }
 
     handlePay() {
-        console.log(this.state.user._id)
         fetch('/customers/' + this.state.user._id + '/orders', {
             method: 'DELETE'
         }).then(console.log('deleted order')).catch('you goofed')
@@ -118,6 +117,9 @@ class Order extends React.Component {
                     {this.renderListItems(orders)}
                 </List>
                 <h3>Total: ${this.state.total}</h3>
+                <button onClick={() => this.handlePay()}>
+                Checkout
+                </button>
             </div>
         );
     }
