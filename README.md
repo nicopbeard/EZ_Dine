@@ -58,6 +58,11 @@ There are three API routes: customers, employees, and menu. Every route supports
 
 **Login** - How users who already have accounts can login (both Customers and Employees).
 
+### Customers vs Employees
+Our application supports signing in as an employee or a customer. Employees register using the code "iamanemployee" and clicking on the top right icon in the form. The customer interface supports viewing the menu, their current orders, their profile, and the home page while the employee interface supports the home page, the employee's current profile, and the current orders that have been placed organized by user. Both employees and customers can sign out. We have one main employee that we use to route all the customer orders placed. The login information for this employee is:
+username: kitchen@ez-dine.com
+password: AnxiousPirate0
+
 ### Deployment
 - This project is set up with integrated heroku deployment
 - To trigger a deploy, simply merge a pull request into branch `heroku`
