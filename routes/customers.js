@@ -86,7 +86,7 @@ router.post('/', (req, res) => {
 				date: Date.now(),
 				orders: []
 		});
-		// TODO: lets make this not fail on duplicate key
+
 		newCustomer.save((err, item) => {
 			if(err) {
 				console.log(err);
@@ -94,15 +94,12 @@ router.post('/', (req, res) => {
 			} else {
 				const newAuthUser = {
 					profile: {
-						// username: req.body.username,
 						firstName: req.body.firstName,
 						lastName: req.body.lastName,
 						email: req.body.email,
 						login: req.body.email,
 						userType: 'Customer',
 						userId: item._id
-						// date: Date.now(),
-						// orders: []
 					},
 					credentials: {
 						password: {
@@ -122,24 +119,26 @@ router.post('/', (req, res) => {
 						});
 			}
 		})
+
 	}
 });
 
 // POST new order for a given user
 router.post('/:user_id/orders', (req, res) => {
-	if(!req.body.menu_item)
+	if(!req.body.menu_item || !req.body.price)
 		res.status(400).send();
 	else {
-		const query = {_id: req.params.user_id};
-		let specReq;
-		if(!req.body.special_requests) specReq = "none";
-		else specReq = req.body.special_requests;
+        const query = {_id: req.params.user_id};
+        let specReq = req.body.special_requests;
+        if(!req.body.special_requests)
+            specReq = "none";
 		const newOrder = {
 			menu_item: req.body.menu_item,
 			special_requests : specReq,
 			status: "ordered",
-			date: Date.now()
-		}
+			date: Date.now(),
+			price: req.body.price
+		};
 		const newVals = {$push: {orders: newOrder} };
 		Customer.findOneAndUpdate(query, newVals, (error) => {
 			if(error)
@@ -201,7 +200,6 @@ router.put('/:user_id', (req, res) => {
 			{
 				const newCustomer = {
 					username: req.body.username,
-					password: req.body.password,
 					date: Date.now(),
 					Order: []
 				}
@@ -212,7 +210,7 @@ router.put('/:user_id', (req, res) => {
 			}
 			else
 			{
-				const newVals = {$set:{username: req.body.username, password: req.body.password, date: Date.now()}};
+				const newVals = {$set:{username: req.body.username, date: Date.now()}};
 				Customer.updateOne(query, newVals, (err2) => {
 					if(err2) return res.status(500).send(err2);
 					else res.status(200).send();
@@ -224,8 +222,10 @@ router.put('/:user_id', (req, res) => {
 
 // GET order by _id
 router.put('/:user_id/orders/:order_id', (req, res) => {
-	if(!req.body.menu_item)
+	if(!req.body.menu_item || !req.body.price) {
+		console.log(req.body)
 		res.status(400).send();
+	}
 	else
 	{
 		const query = {_id:req.params.user_id};
@@ -243,7 +243,9 @@ router.put('/:user_id/orders/:order_id', (req, res) => {
 					if (order._id.toString() === req.params.order_id)
 					{
 						counter = 1;
+            order.price = req.body.price;
 						order.menu_item = req.body.menu_item;
+						order.special_requests = req.body.special_requests;
 						customer[0].save();
 						res.status(200).send();
 					}
@@ -257,7 +259,8 @@ router.put('/:user_id/orders/:order_id', (req, res) => {
 						menu_item: req.body.menu_item,
 						special_requests : specReq,
 						status: "ordered",
-						date: Date.now()
+						date: Date.now(),
+						price: req.body.price
 					}
 					const newVals = {$push: {orders: newOrder} };
 					Customer.findOneAndUpdate(query, newVals, (error) => {
@@ -318,6 +321,23 @@ router.delete('/:user_id/orders/:order_id', (req, res) => {
 			//otherwise send a 400 if the specified order_id doesn't exist
 			else
 				res.status(400).send();
+		}
+	})
+})
+
+// DELETE all orders for a given _id
+router.delete('/:user_id/orders', (req, res) => {
+	const query = {'_id': req.params.user_id};
+	Customer.find(query,(err,results) => {
+		if (err)
+			return res.status(500).send();
+		else if(results.length == 0)
+			return res.status(404).send();
+		else
+		{
+		    results[0].orders = [];
+            results[0].save();
+            res.status(201).send();
 		}
 	})
 })

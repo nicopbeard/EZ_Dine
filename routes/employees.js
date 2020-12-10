@@ -1,6 +1,7 @@
 const express = require('express');
 const Employee = require('../models/Employee.js');
 const router = express.Router();
+const oktaClient = require('../lib/oktaClient');
 
 //API url: http://localhost:5000/employees
 
@@ -29,10 +30,10 @@ router.get('/', (req, res) => {
 				})
 				if(foundEmployees.length == 0)
 					res.status(404).send();
-				else 
+				else
 					res.status(200).json(foundEmployees);
 			}
-		})	
+		})
 	}
 });
 
@@ -50,23 +51,51 @@ router.get('/:user_id', (req, res) => {
 // POST new user
 router.post('/', (req, res) => {
 	//validate schema
-	if(!req.body.username || !req.body.password)
+	console.log(req.body);
+	if(!req.body.email || !req.body.password) {
 		res.status(400).send();
+	}
 	else
 	{
-		const newEmployee = {
-			username: req.body.username,
-			password: req.body.password,
+		const newEmployee = new Employee({
+			username: req.body.email,
 			date: Date.now()
-		}
-		Employee.create(newEmployee, (err) => {
-			if(err)
+		});
+		newEmployee.save((err, item) => {
+			if (err) {
+				console.log(err);
 				return res.status(500).send(err);
-			else
-				res.status(200).send();
+			} else {
+				const newAuthUser = {
+					profile: {
+						firstName: req.body.firstName,
+						lastName: req.body.lastName,
+						email: req.body.email,
+						login: req.body.email,
+						userType: 'Employee',
+						userId: item._id
+					},
+					credentials: {
+						password: {
+							value: req.body.password,
+						}
+					}
+				};
+				oktaClient
+						.createUser(newAuthUser)
+						.then((user) => {
+							user.addToGroup('Employee');
+							res.status(200).send();
+						})
+						.catch((err) => {
+							console.log(err);
+							res.status(400).send(err);
+						});
+			}
 		})
 	}
-})
+});
+
 
 // PUT user by _id
 router.put('/:user_id', (req, res) => {

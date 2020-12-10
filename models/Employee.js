@@ -4,7 +4,6 @@ mongoose.set('useFindAndModify', false);
 
 const employeeSchema = new mongoose.Schema({
     username : {type : String, unique : true},
-    password : {type : String, required : true},
     date : Date
  });
 
