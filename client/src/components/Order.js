@@ -84,6 +84,29 @@ class Order extends React.Component {
     }
 
     handlePay() {
+        var data = []
+        var orders = this.state.orders
+        var email = this.state.user.email
+        orders.map(o => {
+            var object = {
+                "customer_email" : email,
+                "menu_item" : o.menu_item,
+                "special_requests" : o.special_requests,
+                "status" : "in progress",
+                "date" : o.date,
+                "price" : o.price
+            }
+            data.push(object)
+            return o
+        })
+        fetch('/employees/5fd19b6651f6abc1e843e083/orders', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        }).then(console.log('updated order')).catch('you goofed')
+
         fetch('/customers/' + this.state.user._id + '/orders', {
             method: 'DELETE'
         }).then(console.log('deleted order'))

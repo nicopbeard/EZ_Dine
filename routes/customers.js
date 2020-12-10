@@ -220,7 +220,7 @@ router.put('/:user_id', (req, res) => {
 	})
 })
 
-// GET order by _id
+// PUT order by _id
 router.put('/:user_id/orders/:order_id', (req, res) => {
 	if(!req.body.menu_item || !req.body.price) {
 		console.log(req.body)

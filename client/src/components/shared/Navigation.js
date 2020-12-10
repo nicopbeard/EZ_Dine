@@ -41,8 +41,7 @@ export default withAuth(
       const authNav = this.state.authenticated ? (
         <React.Fragment>
           <Menu.Item as={Link} to='/profile' name='profile' />
-          {
-            this.state.user.userType !== 'Employee' ? (
+          {this.state.userType !== 'Employee' ? (
             // Customer navigation
             <React.Fragment>
               <Menu.Item as={Link} to='/menu' name='menu' />
