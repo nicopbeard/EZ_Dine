@@ -87,13 +87,16 @@ class Order extends React.Component {
         var orders = this.state.orders
         var email = this.state.user.email
         orders.map(o => {
-            o.status = "in progress"
             var object = {
-                email,
-                o
+                "customer_email" : email,
+                "menu_item" : o.menu_item,
+                "special_requests" : o.special_requests,
+                "status" : "in progress",
+                "date" : o.date,
+                "price" : o.price
             }
             data.push(object)
-            return
+            return o
         })
         fetch('/employees/5fd19b6651f6abc1e843e083/orders', {
             method: 'PUT',

@@ -132,21 +132,22 @@ router.put('/:user_id', (req, res) => {
 
 // PUT order by _id
 router.put('/:user_id/orders', (req, res) => {
-	if(!req.body.menu_item || !req.body.price) {
-		console.log(req.body)
-		res.status(400).send();
-	}
-	else
-	{
+    console.log(req.body);
+	//if(!req.body.menu_item || !req.body.price) {
+	//	console.log(req.body)
+	//	res.status(400).send();
+	//}
+	//else
+	//{
 		const query = {_id:req.params.user_id};
-		Customer.find(query, (err, customer) => {
+		Employee.find(query, (err, employee) => {
 			if(err)
 				return res.status(500).send(err);
-			else if(customer.length == 0)
+			else if(employee.length == 0)
 				return res.status(404).json();
 			else
 			{
-				let orders = customer[0].orders;
+				let orders = employee[0].orders;
 				var counter = 0;
 				//iterate through the orders to find the corresponding one
 				orders.forEach((order) => {
@@ -157,7 +158,7 @@ router.put('/:user_id/orders', (req, res) => {
                         order.menu_item = req.body.menu_item;
                         order.status = req.body.status;
 						order.special_requests = req.body.special_requests;
-						customer[0].save();
+						employee[0].save();
 						res.status(200).send();
 					}
 				})
@@ -174,7 +175,7 @@ router.put('/:user_id/orders', (req, res) => {
 						price: req.body.price
 					}
 					const newVals = {$push: {orders: newOrder} };
-					Customer.findOneAndUpdate(query, newVals, (error) => {
+					Employee.findOneAndUpdate(query, newVals, (error) => {
 						if(error)
 							res.status(500).send();
 						else
@@ -183,7 +184,7 @@ router.put('/:user_id/orders', (req, res) => {
 				}
 			}
 		})
-	}
+	//}
 })
 
 // DELETE user by _id
